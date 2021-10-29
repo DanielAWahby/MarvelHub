@@ -1,8 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -11,10 +13,51 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" semanticContentAttribute="playback" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mcu-background" translatesAutoresizingMaskIntoConstraints="NO" id="yDv-I1-NCO">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="tintColor" systemColor="systemRedColor"/>
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small"/>
+                            </imageView>
+                            <visualEffectView alpha="0.98999999999999999" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="8gQ-9s-ahH">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="zls-d4-xG3">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="marvel-logo" translatesAutoresizingMaskIntoConstraints="NO" id="ER0-eO-I2F">
+                                            <rect key="frame" x="62" y="351.5" width="290" height="193"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="ER0-eO-I2F" secondAttribute="height" multiplier="3:2" id="WxR-7c-8Uq"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="ER0-eO-I2F" firstAttribute="centerY" secondItem="zls-d4-xG3" secondAttribute="centerY" id="uMN-D9-Ar4"/>
+                                        <constraint firstItem="ER0-eO-I2F" firstAttribute="centerX" secondItem="zls-d4-xG3" secondAttribute="centerX" id="vgc-jX-PnB"/>
+                                    </constraints>
+                                </view>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="ER0-eO-I2F" firstAttribute="width" secondItem="8gQ-9s-ahH" secondAttribute="width" multiplier="0.7" id="2lO-0A-uDh"/>
+                                </constraints>
+                                <blurEffect style="dark"/>
+                            </visualEffectView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="8gQ-9s-ahH" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="8v0-Wd-2Uw"/>
+                            <constraint firstItem="8gQ-9s-ahH" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" id="A2E-P0-dAG"/>
+                            <constraint firstItem="yDv-I1-NCO" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" id="HhY-4F-DpJ"/>
+                            <constraint firstItem="8gQ-9s-ahH" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="X3R-Nn-Bto"/>
+                            <constraint firstItem="yDv-I1-NCO" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="bBd-zE-hh3"/>
+                            <constraint firstItem="yDv-I1-NCO" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" id="fXI-Pg-X3Z"/>
+                            <constraint firstItem="8gQ-9s-ahH" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" id="qmq-lt-IdP"/>
+                            <constraint firstItem="yDv-I1-NCO" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="t1T-F7-Uil"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -22,4 +65,14 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="marvel-logo" width="233.5" height="131.5"/>
+        <image name="mcu-background" width="600" height="337.5"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
 </document>
