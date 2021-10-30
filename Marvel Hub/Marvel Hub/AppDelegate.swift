@@ -34,3 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+extension Date {
+    func toMillis() -> Int64! {
+            return Int64(self.timeIntervalSince1970 * 1000)
+    }
+}

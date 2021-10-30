@@ -3,8 +3,8 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -15,18 +15,116 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="PIO-ac-mvh">
+                                <rect key="frame" x="197" y="846" width="20" height="20"/>
+                                <color key="tintColor" name="AccentColor"/>
+                            </activityIndicatorView>
+                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="49d-7G-a4b">
+                                <rect key="frame" x="0.0" y="-398" width="414" height="448"/>
+                                <color key="barTintColor" name="Dark_Status_Bar_Color"/>
+                                <items>
+                                    <navigationItem title="Title" id="nho-Ji-QIh"/>
+                                </items>
+                            </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kPI-jb-4ri">
+                                <rect key="frame" x="0.0" y="80" width="414" height="736"/>
+                                <color key="backgroundColor" name="Dark_Background_Color"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="characterCell" rowHeight="109" id="UjR-rE-r91" customClass="CharacterViewCell" customModule="Marvel_Hub" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="109"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UjR-rE-r91" id="nk5-rA-Oqc">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="109"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2B3-Q0-71R">
+                                                    <rect key="frame" x="41.5" y="0.0" width="331" height="109"/>
+                                                </imageView>
+                                                <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I3A-pj-lxZ">
+                                                    <rect key="frame" x="41.5" y="82" width="331" height="27"/>
+                                                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="wkv-UC-iVr">
+                                                        <rect key="frame" x="0.0" y="0.0" width="331" height="27"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.30000001192092896" translatesAutoresizingMaskIntoConstraints="NO" id="Xmi-4E-ops">
+                                                                <rect key="frame" x="143.5" y="3" width="44.5" height="20.5"/>
+                                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstItem="Xmi-4E-ops" firstAttribute="centerX" secondItem="wkv-UC-iVr" secondAttribute="centerX" id="Vtk-eh-a8l"/>
+                                                            <constraint firstItem="Xmi-4E-ops" firstAttribute="centerY" secondItem="wkv-UC-iVr" secondAttribute="centerY" id="hxI-fj-zhQ"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <blurEffect style="light"/>
+                                                </visualEffectView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="2B3-Q0-71R" firstAttribute="centerX" secondItem="nk5-rA-Oqc" secondAttribute="centerX" id="G1X-rw-ES4"/>
+                                                <constraint firstItem="2B3-Q0-71R" firstAttribute="width" secondItem="nk5-rA-Oqc" secondAttribute="width" multiplier="0.8" id="KmD-me-EvX"/>
+                                                <constraint firstItem="I3A-pj-lxZ" firstAttribute="centerX" secondItem="nk5-rA-Oqc" secondAttribute="centerX" id="QbS-pW-lyI"/>
+                                                <constraint firstAttribute="bottom" secondItem="I3A-pj-lxZ" secondAttribute="bottom" id="ZlU-Y2-9pj"/>
+                                                <constraint firstItem="2B3-Q0-71R" firstAttribute="centerY" secondItem="nk5-rA-Oqc" secondAttribute="centerY" id="dPy-U7-clM"/>
+                                                <constraint firstItem="2B3-Q0-71R" firstAttribute="height" secondItem="nk5-rA-Oqc" secondAttribute="height" id="hSg-51-TDh"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <viewLayoutGuide key="safeArea" id="IxF-HN-oFK"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="I3A-pj-lxZ" firstAttribute="height" secondItem="UjR-rE-r91" secondAttribute="height" multiplier="0.25" id="BzL-gF-vyf"/>
+                                            <constraint firstItem="I3A-pj-lxZ" firstAttribute="width" secondItem="UjR-rE-r91" secondAttribute="width" multiplier="0.8" id="Ddd-JY-MV8"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="characterImage" destination="2B3-Q0-71R" id="yJ5-pn-xmQ"/>
+                                            <outlet property="characterNameLabel" destination="Xmi-4E-ops" id="6sL-Aw-E09"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="KXG-pe-nOu"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="TF9-AP-gSR"/>
+                                    <outlet property="prefetchDataSource" destination="BYZ-38-t0r" id="CRm-U9-8mK"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="Dark_Background_Color"/>
+                        <constraints>
+                            <constraint firstItem="kPI-jb-4ri" firstAttribute="top" secondItem="49d-7G-a4b" secondAttribute="bottom" constant="30" id="3JO-p1-zJh"/>
+                            <constraint firstItem="kPI-jb-4ri" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="61Q-6f-nei"/>
+                            <constraint firstItem="49d-7G-a4b" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="LSf-9I-OZN"/>
+                            <constraint firstItem="kPI-jb-4ri" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Ov4-FQ-gjN"/>
+                            <constraint firstItem="49d-7G-a4b" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.5" id="QNh-fl-IA9"/>
+                            <constraint firstAttribute="bottom" secondItem="PIO-ac-mvh" secondAttribute="bottom" constant="30" id="fJN-Hl-qVk"/>
+                            <constraint firstItem="PIO-ac-mvh" firstAttribute="top" secondItem="kPI-jb-4ri" secondAttribute="bottom" constant="30" id="ggf-T2-cPp"/>
+                            <constraint firstItem="49d-7G-a4b" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="p9I-qu-Q4h"/>
+                            <constraint firstItem="kPI-jb-4ri" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="txq-kP-ee6"/>
+                            <constraint firstItem="PIO-ac-mvh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="wpV-pl-kua"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="activityIndicator" destination="PIO-ac-mvh" id="Un1-Ss-25G"/>
+                        <outlet property="charactersTableView" destination="kPI-jb-4ri" id="NMn-nx-9CU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1020" y="-78"/>
+            <point key="canvasLocation" x="-110.14492753623189" y="-78.348214285714278"/>
         </scene>
     </scenes>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <namedColor name="AccentColor">
+            <color red="0.94099998474121094" green="0.22400000691413879" blue="0.21199999749660492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Dark_Background_Color">
+            <color red="0.082000002264976501" green="0.082000002264976501" blue="0.082000002264976501" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Dark_Status_Bar_Color">
+            <color red="0.10599999874830246" green="0.10599999874830246" blue="0.10599999874830246" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

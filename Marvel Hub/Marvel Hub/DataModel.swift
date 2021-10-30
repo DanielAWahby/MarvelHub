@@ -7,7 +7,15 @@
 //
 
 import Foundation
-
+struct ResponseModel:Codable{
+    var code:Int?
+    var status:String?
+    var data:DataObj?
+}
+struct DataObj:Codable{
+    var total:Int?
+    var results:[Character]?
+}
 struct Character:Codable {
     var id:Int?
     var name:String?
@@ -22,6 +30,11 @@ struct Character:Codable {
 struct Image:Codable {
     var path:String?
     var imageExtension:String?
+    
+    private enum CodingKeys : String, CodingKey {
+            case path = "path"
+        case imageExtension = "extension"
+    }
 }
 
 struct ComicList:Codable {
@@ -69,3 +82,4 @@ struct SeriesSummary:Codable{
     var resourceURI:String?
     var name:String?
 }
+
