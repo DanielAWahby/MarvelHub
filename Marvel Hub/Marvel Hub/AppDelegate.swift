@@ -6,28 +6,25 @@
 //
 
 import UIKit
+import CryptoKit
+
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    
-//    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-//        
-//        window = UIWindow(frame: UIScreen.main.bounds)
-//        window?.makeKeyAndVisible()
-//        window?.backgroundColor = .systemBackground
-//        
-//        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AllCharacterScreen")
-//        let navigationController = UINavigationController(rootViewController: viewController)
-//        window?.rootViewController = navigationController
-//        
-//        return true
-//    }
 
 
 }
-
+extension String{
+    var md5 : String{
+        let digest = Insecure.MD5.hash(data: self.data(using: .utf8) ?? Data())
+        
+        return digest.map {
+            String(format: "%02hhx", $0)
+        }.joined()
+    }
+}
 extension Date {
     func toMillis() -> Int64! {
             return Int64(self.timeIntervalSince1970 * 1000)

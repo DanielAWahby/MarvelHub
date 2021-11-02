@@ -13,6 +13,9 @@ import SwiftyJSON
 class ViewController: UIViewController {
     var allFetchedcharacters = [Character]()
     let cellIdentifier = "characterCell"
+    
+   
+    
     @IBOutlet weak var charactersTableView:UITableView!
     @IBOutlet weak var activityIndicator:UIActivityIndicatorView!
     override func viewDidLoad() {
@@ -38,13 +41,13 @@ class ViewController: UIViewController {
         
     }
     func getAllCharacters(){
-        let publicApiKey = "23d9195168af096b4b2c6de3cfa59d06"
-        let privateApiKey = "5551a75410d177e04fe11fb84e178a2e7eb1ac18"
-        let ts = String(Date().toMillis())
-        let hash = MD5(string:"\(ts)\(privateApiKey)\(publicApiKey)")
-        let allCharactersEndpoint = "https://gateway.marvel.com:443/v1/public/characters?ts=\(ts)&apikey=\(publicApiKey)&hash=\(hash)"
         
+        let privateApiKey = "5551a75410d177e04fe11fb84e178a2e7eb1ac18"
         let parameters : [String:Any] = [ "orderBy" : "name","limit":100]
+        let publicApiKey = "23d9195168af096b4b2c6de3cfa59d06"
+        let ts = String(Date().toMillis())
+        let apiHash = MD5(string:"\(ts)\(privateApiKey)\(publicApiKey)")
+        let allCharactersEndpoint = "https://gateway.marvel.com:443/v1/public/characters?ts=\(ts)&apikey=\(publicApiKey)&hash=\(apiHash)"
         var request = URLRequest(url: URL(string: allCharactersEndpoint)!)
         request.httpMethod = "GET"
         request.httpBody = parameters as? Data
@@ -69,7 +72,9 @@ class ViewController: UIViewController {
         task.resume()
         
     }
-    
+//    func getCurrentCharacterItems( characterId:Int)->([ComicList],[EventList],[SeriesList]){
+//
+//    }
     func MD5(string: String) -> String {
         let digest = Insecure.MD5.hash(data: string.data(using: .utf8) ?? Data())
         
@@ -101,18 +106,22 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource,UITableVie
 //        let currentCharacterImage = UIImage(data: data!)
         let path = allFetchedcharacters[indexPath.row].thumbnail!.path ?? "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73"
 //        print("Image Path: ",path)
-        let imageVariation = "landscape_incredible"
-        let imageExtension = allFetchedcharacters[indexPath.row].thumbnail!.imageExtension ?? ".jpg"
-        let imageUrl = URL(string:"\(path)/\(imageVariation).\(imageExtension)")!
-        do {
-
-            let imageData = try Data(contentsOf: imageUrl)
-            cell.characterImage.image = UIImage(data: imageData)
-        } catch{
-            print(error.localizedDescription)
-            cell.characterImage.image = UIImage(named: "marvel-logo")
+        if path.contains("image_not_available"){
+            cell.characterImage.image = UIImage(named: "image-placeholder")
         }
-        
+        else{
+            let imageVariation = "landscape_incredible"
+            let imageExtension = allFetchedcharacters[indexPath.row].thumbnail!.imageExtension ?? ".jpg"
+            let imageUrl = URL(string:"\(path)/\(imageVariation).\(imageExtension)")!
+            do {
+                
+                let imageData = try Data(contentsOf: imageUrl)
+                cell.characterImage.image = UIImage(data: imageData)
+            } catch{
+                print(error.localizedDescription)
+                cell.characterImage.image = UIImage(named: "image-placeholder")
+            }
+        }
         cell.contentView.layer.cornerRadius = 10
         cell.characterImage.layer.cornerRadius = 10
         cell.clipsToBounds = true
@@ -123,12 +132,15 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource,UITableVie
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 200
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CharacterDetailScreen") as? CharacterDetailsController
+        viewController?.characterId = allFetchedcharacters[indexPath.row].id ?? 0
         viewController?.imagePath = allFetchedcharacters[indexPath.row].thumbnail?.path ?? "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73"
         viewController?.imageExtension = allFetchedcharacters[indexPath.row].thumbnail?.imageExtension ?? ".jpg"
         viewController?.characterName = allFetchedcharacters[indexPath.row].name ?? "Ultron"
         viewController?.descriptionText =  allFetchedcharacters[indexPath.row].description ?? "Character Description Goes Here."
+        
         viewController?.modalTransitionStyle = .crossDissolve
         viewController?.modalPresentationStyle = .fullScreen
         present(viewController ?? UIViewController(), animated: true, completion: nil)

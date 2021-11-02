@@ -43,6 +43,14 @@ struct ComicList:Codable {
     var collectionURI:String?
     var items:[ComicSummary]?
 }
+
+struct Comic:Codable {
+    var id:Int?
+    var digitalId:Int?
+    var title:String?
+    var thumbnail:Image?
+    
+}
 struct ComicSummary:Codable{
     var resourceURI:String?
     var name:String?
