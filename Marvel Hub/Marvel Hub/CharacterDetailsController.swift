@@ -9,11 +9,12 @@ import UIKit
 
 class CharacterDetailsController: UIViewController {
     
-    
+    let cellIdentifier = "characterItem"
     var imagePath = ""
     var imageExtension = ""
     var characterName = ""
     var descriptionText = ""
+    
     
     @IBOutlet weak var backButtonContainerView: UIVisualEffectView!
     @IBOutlet weak var characterFullName: UILabel!
@@ -34,6 +35,7 @@ class CharacterDetailsController: UIViewController {
         characterImage.clipsToBounds = true
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
+        self.collectionView.register(UINib(nibName: "CharacterItemCell", bundle: nil), forCellWithReuseIdentifier: cellIdentifier)
         characterFullName.text = characterName
         let imageVariation = "portrait_incredible"
         let imageUrl = URL(string:"\(imagePath)/\(imageVariation).\(imageExtension)")!
@@ -56,11 +58,11 @@ extension CharacterDetailsController : UICollectionViewDelegate,UICollectionView
     }
     func numberOfSections(in collectionView: UICollectionView) -> Int {
 //        Each Section represents a category of items that is associated with the currently opened character. These categories are: Comics, Events, Series and Stories.
-        return 4
+        return 1
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        TODO
-        return UICollectionViewCell()
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! CharacterItemCell
+        return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        TODO

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		A71BAE682730B4C20064CE25 /* CharacterDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71BAE672730B4C20064CE25 /* CharacterDetailsController.swift */; };
+		A71BAE6C2730C7F00064CE25 /* CharacterItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71BAE6A2730C7F00064CE25 /* CharacterItemCell.swift */; };
+		A71BAE6D2730C7F00064CE25 /* CharacterItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A71BAE6B2730C7F00064CE25 /* CharacterItemCell.xib */; };
 		A7226A27272CED1300B84FE7 /* CharacterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7226A25272CED1300B84FE7 /* CharacterViewCell.swift */; };
 		A7226A28272CED1300B84FE7 /* CharacterViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7226A26272CED1300B84FE7 /* CharacterViewCell.xib */; };
 		A7226A2C272CEF8800B84FE7 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7226A2B272CEF8800B84FE7 /* DataModel.swift */; };
@@ -23,6 +25,8 @@
 /* Begin PBXFileReference section */
 		A07DF112928BBCB0C9A2E383 /* Pods_Marvel_Hub.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Marvel_Hub.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A71BAE672730B4C20064CE25 /* CharacterDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailsController.swift; sourceTree = "<group>"; };
+		A71BAE6A2730C7F00064CE25 /* CharacterItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterItemCell.swift; sourceTree = "<group>"; };
+		A71BAE6B2730C7F00064CE25 /* CharacterItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CharacterItemCell.xib; sourceTree = "<group>"; };
 		A7226A25272CED1300B84FE7 /* CharacterViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterViewCell.swift; sourceTree = "<group>"; };
 		A7226A26272CED1300B84FE7 /* CharacterViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CharacterViewCell.xib; sourceTree = "<group>"; };
 		A7226A2B272CEF8800B84FE7 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
@@ -90,6 +94,8 @@
 				A7F63C61272ABB20007A4B03 /* Info.plist */,
 				A7226A25272CED1300B84FE7 /* CharacterViewCell.swift */,
 				A7226A26272CED1300B84FE7 /* CharacterViewCell.xib */,
+				A71BAE6A2730C7F00064CE25 /* CharacterItemCell.swift */,
+				A71BAE6B2730C7F00064CE25 /* CharacterItemCell.xib */,
 			);
 			path = "Marvel Hub";
 			sourceTree = "<group>";
@@ -163,6 +169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7F63C60272ABB1F007A4B03 /* LaunchScreen.storyboard in Resources */,
+				A71BAE6D2730C7F00064CE25 /* CharacterItemCell.xib in Resources */,
 				A7F63C5D272ABB1F007A4B03 /* Assets.xcassets in Resources */,
 				A7226A28272CED1300B84FE7 /* CharacterViewCell.xib in Resources */,
 				A7F63C5B272ABB18007A4B03 /* Main.storyboard in Resources */,
@@ -222,6 +229,7 @@
 				A7F63C58272ABB18007A4B03 /* ViewController.swift in Sources */,
 				A7F63C54272ABB18007A4B03 /* AppDelegate.swift in Sources */,
 				A7F63C56272ABB18007A4B03 /* SceneDelegate.swift in Sources */,
+				A71BAE6C2730C7F00064CE25 /* CharacterItemCell.swift in Sources */,
 				A71BAE682730B4C20064CE25 /* CharacterDetailsController.swift in Sources */,
 				A7226A27272CED1300B84FE7 /* CharacterViewCell.swift in Sources */,
 			);
