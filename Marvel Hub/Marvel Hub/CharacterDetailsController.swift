@@ -8,22 +8,61 @@
 import UIKit
 
 class CharacterDetailsController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    
+    
+    var imagePath = ""
+    var imageExtension = ""
+    var characterName = ""
+    var descriptionText = ""
+    
+    @IBOutlet weak var backButtonContainerView: UIVisualEffectView!
+    @IBOutlet weak var characterFullName: UILabel!
+    @IBOutlet weak var characterImage: UIImageView!
+    @IBOutlet weak var desriptionTextView: UITextView!
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    @IBAction func backPressed(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        backButtonContainerView.layer.cornerRadius = backButtonContainerView.frame.height / 2
+        backButtonContainerView.layer.maskedCorners = [.layerMaxXMinYCorner,.layerMaxXMaxYCorner]
+        backButtonContainerView.layer.masksToBounds = true
+        characterImage.layer.cornerRadius = 10
+        characterImage.clipsToBounds = true
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
+        characterFullName.text = characterName
+        let imageVariation = "portrait_incredible"
+        let imageUrl = URL(string:"\(imagePath)/\(imageVariation).\(imageExtension)")!
+        do {
+            let imageData = try Data(contentsOf: imageUrl)
+            characterImage.image = UIImage(data: imageData)
+        } catch{
+            print(error.localizedDescription)
+            characterImage.image = UIImage(named: "image-placeholder")
+        }
+        desriptionTextView.text = descriptionText
     }
-    */
+    
+}
 
+extension CharacterDetailsController : UICollectionViewDelegate,UICollectionViewDataSource{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        TODO
+        return 1
+    }
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+//        Each Section represents a category of items that is associated with the currently opened character. These categories are: Comics, Events, Series and Stories.
+        return 4
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        TODO
+        return UICollectionViewCell()
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        TODO
+    }
 }

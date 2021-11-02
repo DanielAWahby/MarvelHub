@@ -21,5 +21,10 @@ class CharacterViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        //set the values for top,left,bottom,right margins
+        let margins = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        contentView.frame = contentView.frame.inset(by: margins)
+    }
 }

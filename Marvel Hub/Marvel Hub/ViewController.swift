@@ -18,14 +18,17 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let imageView = UIImageView(image: UIImage(named: "marvel-logo"))
-        imageView.contentMode = .scaleAspectFit
+//      im
+//        imageView.contentMode = .
+        imageView.contentScaleFactor = 2
+//        self.navigationController?.navigationBar.prefersLargeTitles = true
+//        
+//        self.navigationController?.navigationBar.layer.cornerRadius = 5
+//        self.navigationController?.navigationBar.layer.masksToBounds = true
+        self.navigationController?.navigationBar.layer.maskedCorners = [.layerMinXMaxYCorner,.layerMaxXMaxYCorner]
         self.navigationItem.titleView = imageView
-        self.navigationController?.navigationBar.layer.cornerRadius = 5
-        self.navigationController?.navigationBar.clipsToBounds = true
-        self.navigationController?.navigationBar.layer.maskedCorners = [.layerMaxXMaxYCorner]
-        self.view.window?.backgroundColor = .white
         
-      
+//        self.
         self.charactersTableView.register(UINib(nibName: "CharacterViewCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
         self.charactersTableView.delegate = self
         self.charactersTableView.dataSource = self
@@ -81,7 +84,6 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource,UITableVie
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         print("Prefetching.....")
     }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("\(allFetchedcharacters.count) characters")
         return allFetchedcharacters.count
@@ -98,29 +100,38 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource,UITableVie
 //        }
 //        let currentCharacterImage = UIImage(data: data!)
         let path = allFetchedcharacters[indexPath.row].thumbnail!.path ?? "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73"
-        print("Image Path: ",path)
+//        print("Image Path: ",path)
         let imageVariation = "landscape_incredible"
         let imageExtension = allFetchedcharacters[indexPath.row].thumbnail!.imageExtension ?? ".jpg"
-        print("Image Extension: ",imageExtension)
         let imageUrl = URL(string:"\(path)/\(imageVariation).\(imageExtension)")!
         do {
 
             let imageData = try Data(contentsOf: imageUrl)
-            cell.characterImage.image = UIImage(data: imageData ?? Data())
+            cell.characterImage.image = UIImage(data: imageData)
         } catch{
             print(error.localizedDescription)
             cell.characterImage.image = UIImage(named: "marvel-logo")
         }
         
         cell.contentView.layer.cornerRadius = 10
+        cell.characterImage.layer.cornerRadius = 10
         cell.clipsToBounds = true
-        cell.layer.masksToBounds = true
+//        cell.layer.masksToBounds = true
         return cell
     }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 120
+        return 200
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        TODO
+        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CharacterDetailScreen") as? CharacterDetailsController
+        viewController?.imagePath = allFetchedcharacters[indexPath.row].thumbnail?.path ?? "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73"
+        viewController?.imageExtension = allFetchedcharacters[indexPath.row].thumbnail?.imageExtension ?? ".jpg"
+        viewController?.characterName = allFetchedcharacters[indexPath.row].name ?? "Ultron"
+        viewController?.descriptionText =  allFetchedcharacters[indexPath.row].description ?? "Character Description Goes Here."
+        viewController?.modalTransitionStyle = .crossDissolve
+        viewController?.modalPresentationStyle = .fullScreen
+        present(viewController ?? UIViewController(), animated: true, completion: nil)
     }
+    
 }
