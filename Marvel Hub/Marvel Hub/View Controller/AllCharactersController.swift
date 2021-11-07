@@ -27,12 +27,7 @@ class AllCharactersController: UIViewController {
     @IBAction func searchPressed(_ sender: Any) {
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchController") as? SearchController
         viewController?.passedResults = allFetchedcharacters
-//        let transition = CATransition()
-//        transition.duration = 0.25
-//        transition.type = CATransitionType.fade
-////        transition.subtype = CATransitionSubtype.fromRight
-////        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.linear)
-//        view.window!.layer.add(transition, forKey: kCATransition)
+
         let navigationController = UINavigationController(rootViewController: viewController ?? UIViewController())
         navigationController.modalTransitionStyle = .crossDissolve
         navigationController.modalPresentationStyle = .fullScreen

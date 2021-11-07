@@ -14,6 +14,7 @@ protocol CharacterDetailDelegate: class {
 class CharacterDetailsController: UIViewController {
     
     let cellIdentifier = "characterItem"
+    let headerIdentifier = "headerItem"
     let publicApiKey = "23d9195168af096b4b2c6de3cfa59d06"
     let privateApiKey = "5551a75410d177e04fe11fb84e178a2e7eb1ac18"
     
@@ -22,6 +23,7 @@ class CharacterDetailsController: UIViewController {
     var imageExtension = ""
     var characterName = ""
     var descriptionText = ""
+    var numberOfSections = 1
     
     var comics = [Comic]()
     var events = [Event]()
@@ -32,7 +34,7 @@ class CharacterDetailsController: UIViewController {
     
     
     var sectionInsets : UIEdgeInsets{
-        return UIEdgeInsets(top: 5, left: 16, bottom: 5, right: 16)
+        return UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
     }
     
     let spacingBetweenCells: CGFloat = 5
@@ -60,6 +62,7 @@ class CharacterDetailsController: UIViewController {
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         self.collectionView.register(CharacterItemCell.self, forCellWithReuseIdentifier: cellIdentifier)
+        self.collectionView.register(UINib(nibName: "Header", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
         characterFullName.text = characterName
         if imagePath.contains("image_not_available"){
             characterImage.image = UIImage(named: "image-placeholder")
@@ -77,7 +80,7 @@ class CharacterDetailsController: UIViewController {
         }
         descriptionLabel.text = "descriptionTitle".localizableString
         descriptionLabel.textAlignment = self.isAppArabic ? .right : .left
-        desriptionTextView.text = descriptionText
+        desriptionTextView.text = descriptionText == "" ? "defaultDesriptionText".localizableString : descriptionText
         print(descriptionText)
         print("ID: ",characterId)
         getCurrentCharacterItems(characterId: characterId)
@@ -85,16 +88,15 @@ class CharacterDetailsController: UIViewController {
         view.layoutIfNeeded()
     }
     
-    func getCurrentCharacterItems( characterId:Int){
-        let ts = String(Date().toMillis())
-        let apiHash = "\(ts)\(privateApiKey)\(publicApiKey)".md5
-        let allCharactersEndpoint = "https://gateway.marvel.com:443/v1/public/characters/\(characterId)/comics?ts=\(ts)&apikey=\(publicApiKey)&hash=\(apiHash)"
+    func getCurrentCharacterItems(characterId:Int){
+        var ts = String(Date().toMillis())
+        var apiHash = "\(ts)\(privateApiKey)\(publicApiKey)".md5
+        let comicsEndpoint = "https://gateway.marvel.com:443/v1/public/characters/\(characterId)/comics?ts=\(ts)&apikey=\(publicApiKey)&hash=\(apiHash)"
         
-//        let parameters : [String:Any] = [ "characterId" : characterId]
-        var request = URLRequest(url: URL(string: allCharactersEndpoint)!)
+        var request = URLRequest(url: URL(string: comicsEndpoint)!)
         request.httpMethod = "GET"
-//        request.httpBody = parameters as? Data
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+
+        let comicsTask = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else { return }
             do {
                 let comicList = try JSONDecoder().decode(ResponseModelComic.self, from: data)
@@ -106,40 +108,102 @@ class CharacterDetailsController: UIViewController {
                 })
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
+                    
                 }
             } catch let error as NSError {
                 print(error.localizedDescription)
             }
         }
-        task.resume()
-//        ts = String(Date().toMillis())
-//        apiHash = "\(ts)\(privateApiKey)\(publicApiKey)".md5
-//        allCharactersEndpoint = "https://gateway.marvel.com:443/v1/public/characters/\(characterId)/events?ts=\(ts)&apikey=\(publicApiKey)&hash=\(apiHash)"
-//        
-////        let parameters : [String:Any] = [ "characterId" : characterId]
-//        request = URLRequest(url: URL(string: allCharactersEndpoint)!)
-//        request.httpMethod = "GET"
-////        request.httpBody = parameters as? Data
-//        task = URLSession.shared.dataTask(with: request) { data, response, error in
-//            guard let data = data, error == nil else { return }
-//            do {
-//                let eventList = try JSONDecoder().decode(ResponseModelEvent.self, from: data)
-//                print("Status: ",eventList.status ?? 200)
-//                eventList.data?.results?.forEach({ (fetchedEvent) in
-//                    let event = Event(id: fetchedEvent.id,title: fetchedEvent.title, thumbnail: fetchedEvent.thumbnail)
-//                    self.events.append(event)
-//                    print(event.title ?? "TITLE")
-//                })
-//                DispatchQueue.main.async {
-////                    self.collectionView.reloadData()
-////                    self.collectionView.collectionViewLayout.invalidateLayout()
-//                }
-//            } catch let error as NSError {
-//                print(error.localizedDescription)
-//            }
-//        }
-//        task.resume()
+        comicsTask.resume()
+        while comicsTask.state == .running{
+            if comicsTask.state == .completed || comicsTask.state == .suspended {
+                numberOfSections += 1
+                break
+            }
+        }
+        ts = String(Date().toMillis())
+        apiHash = "\(ts)\(privateApiKey)\(publicApiKey)".md5
+        let eventsEndpoint = "https://gateway.marvel.com:443/v1/public/characters/\(characterId)/events?ts=\(ts)&apikey=\(publicApiKey)&hash=\(apiHash)"
+        request = URLRequest(url: URL(string: eventsEndpoint)!)
+        request.httpMethod = "GET"
+        let eventsTask = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else { return }
+            do {
+                let eventList = try JSONDecoder().decode(ResponseModelEvent.self, from: data)
+                print("Status: ",eventList.status ?? 200)
+                eventList.data?.results?.forEach({ (fetchedEvent) in
+                    let event = Event(id: fetchedEvent.id,title: fetchedEvent.title, thumbnail: fetchedEvent.thumbnail)
+                    self.events.append(event)
+                    print(event.title ?? "TITLE")
+                })
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        }
+        eventsTask.resume()
         
+        while eventsTask.state == .running{
+            if eventsTask.state == .completed || eventsTask.state == .suspended {
+                numberOfSections += 1
+                break
+            }
+        }
+        ts = String(Date().toMillis())
+        apiHash = "\(ts)\(privateApiKey)\(publicApiKey)".md5
+        let seriesEndpoint = "https://gateway.marvel.com:443/v1/public/characters/\(characterId)/series?ts=\(ts)&apikey=\(publicApiKey)&hash=\(apiHash)"
+        request = URLRequest(url: URL(string: seriesEndpoint)!)
+        request.httpMethod = "GET"
+        let seriesTask = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else { return }
+            do {
+                let seriesList = try JSONDecoder().decode(ResponseModelSeries.self, from: data)
+                print("Status: ",seriesList.status ?? 200)
+                seriesList.data?.results?.forEach({ (fetchedSeries) in
+                    let series = Series(id: fetchedSeries.id,title: fetchedSeries.title, thumbnail: fetchedSeries.thumbnail)
+                    self.series.append(series)
+                    print(series.title ?? "TITLE")
+                })
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        }
+        seriesTask.resume()
+        
+        while seriesTask.state == .running{
+            if seriesTask.state == .completed || seriesTask.state == .suspended {
+                numberOfSections += 1
+                break
+            }
+        }
+        ts = String(Date().toMillis())
+        apiHash = "\(ts)\(privateApiKey)\(publicApiKey)".md5
+        let storiesEndpoint = "https://gateway.marvel.com:443/v1/public/characters/\(characterId)/stories?ts=\(ts)&apikey=\(publicApiKey)&hash=\(apiHash)"
+        request = URLRequest(url: URL(string: storiesEndpoint)!)
+        request.httpMethod = "GET"
+        let storiesTask = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else { return }
+            do {
+                let storiesList = try JSONDecoder().decode(ResponseModelStories.self, from: data)
+                print("Status: ",storiesList.status ?? 200)
+                storiesList.data?.results?.forEach({ (fetchedStory) in
+                    let story = Story(id: fetchedStory.id,title: fetchedStory.title, thumbnail: fetchedStory.thumbnail)
+                    self.stories.append(story)
+                    print(story.title ?? "TITLE")
+                })
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        }
+        storiesTask.resume()
     }
     
 }
@@ -150,24 +214,39 @@ extension CharacterDetailsController : UICollectionViewDelegate,UICollectionView
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        Each Section represents a category of items that is associated with the currently opened character. These categories are: Comics, Events, Series and Stories.
         
-        return 4
+        return numberOfSections
     }
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//        ////            let screenLeft = -(UIScreen.main.bounds.width / 2)
-//        //    ////        let screenRight = UIScreen.main.bounds.width / 4
-//        return sectionInsets
-//    }
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return spacingBetweenCells
-//    }
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(width: collectionView.frame.size.width, height: collectionView.frame.size.height / 4)
-//    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return sectionInsets
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return spacingBetweenCells
+    }
+
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath) as? Header
+        switch indexPath.section {
+        case 0:
+            header?.characterItemLabel.text = "comicsTitle".localizableString
+        case 1:
+            header?.characterItemLabel.text = "eventsTitle".localizableString
+        case 2:
+            header?.characterItemLabel.text = "seriesTitle".localizableString
+        default:
+            header?.characterItemLabel.text = "storiesTitle".localizableString
+        }
+        return header ?? UICollectionReusableView()
+        
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 15)
+    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         print("Width: ",self.collectionView.frame.size.width)
-        return CGSize(width: self.view.frame.size.width * 0.8, height: 150)
+        return CGSize(width: self.view.frame.size.width * 0.8, height: 300)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! CharacterItemCell
@@ -177,18 +256,8 @@ extension CharacterDetailsController : UICollectionViewDelegate,UICollectionView
         cell.passedEvents = events
         cell.passedSeries = series
         cell.passedStories = stories
-   
-        switch indexPath.section {
-        case 0: cell.itemLabel.text = "comicsTitle".localizableString
-        case 1: cell.itemLabel.text = "eventsTitle".localizableString
-        case 2: cell.itemLabel.text = "seriesTitle".localizableString
-        default:
-            cell.itemLabel.text = "storiesTitle".localizableString
-        }
-        cell.itemLabel.textAlignment  = self.isAppArabic ? .right : .left
+        
         cell.onInnerCollectionlShouldUpdate()
         return cell
-    }
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     }
 }

@@ -23,10 +23,6 @@ struct Character:Codable {
     var name:String?
     var description:String?
     var thumbnail:Image?
-//    var comics:ComicList?
-//    var stories:StoryList?
-//    var events:EventList?
-//    var series:SeriesList?
 }
 
 struct ResponseModelComic:Codable{
@@ -69,11 +65,29 @@ struct Event:Codable {
     var thumbnail:Image?
     
 }
+struct ResponseModelSeries:Codable{
+    var code:Int?
+    var status:String?
+    var data:DataObjSeries?
+}
+struct DataObjSeries:Codable{
+    var total:Int?
+    var results:[Series]?
+}
 struct Series:Codable {
     var id:Int?
     var title:String?
     var thumbnail:Image?
     
+}
+struct ResponseModelStories:Codable{
+    var code:Int?
+    var status:String?
+    var data:DataObjStories?
+}
+struct DataObjStories:Codable{
+    var total:Int?
+    var results:[Story]?
 }
 struct Story:Codable {
     var id:Int?
@@ -87,7 +101,7 @@ struct Image:Codable {
     var imageExtension:String?
     
     private enum CodingKeys : String, CodingKey {
-            case path = "path"
+        case path = "path"
         case imageExtension = "extension"
     }
 }

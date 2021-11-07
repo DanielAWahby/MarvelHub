@@ -14,7 +14,7 @@
             <objects>
                 <viewController storyboardIdentifier="AllCharacterScreen" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" userLabel="All Characters Controller" customClass="AllCharactersController" customModule="Marvel_Hub" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="756"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="-1" sectionFooterHeight="28" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kPI-jb-4ri">
@@ -176,7 +176,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8US-Ct-Jqt">
-                                            <rect key="frame" x="0.0" y="0.0" width="58" height="34"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="58.666666666666664" height="33.666666666666664"/>
                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <inset key="imageEdgeInsets" minX="19" minY="10" maxX="19" maxY="10"/>
                                             <state key="normal" image="ic-back"/>
@@ -300,7 +300,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Qql-fA-7oT">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="Zwp-v3-35H" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="SearchControllerNavigation" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" navigationBarHidden="YES" id="Zwp-v3-35H" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="tsh-p4-vcE">
                         <autoresizingMask key="autoresizingMask"/>

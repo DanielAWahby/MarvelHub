@@ -9,6 +9,8 @@
 
 lang = "en";
 
+// English translation of strings
+
 "cancelText" = "cancel";
 "searchPlaceholder" = "Search for a character...";
 "descriptionTitle" = "Description";
@@ -16,3 +18,16 @@ lang = "en";
 "eventsTitle" = "Events";
 "seriesTitle" = "Series";
 "storiesTitle" = "Stories";
+
+
+// Default values for strings that can be nil.
+
+"defaultCharacterName" = "Ultron";
+"defaultDesriptionText" = "Character description goes here.";
+"defaultPath" = "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73";
+"defaultExtension" = ".jpg";
+"defaultComicTitle" = "Marvel Comic";
+"defaultEventTitle" = "Marvel Event";
+"defaultSeriesTitle" = "Marvel Series";
+"defaultStoryTitle" = "Marvel Story";
+
