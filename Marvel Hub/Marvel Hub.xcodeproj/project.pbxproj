@@ -12,6 +12,7 @@
 		A7226A27272CED1300B84FE7 /* CharacterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7226A25272CED1300B84FE7 /* CharacterViewCell.swift */; };
 		A7226A2C272CEF8800B84FE7 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7226A2B272CEF8800B84FE7 /* DataModel.swift */; };
 		A7354590273407F100EAE5B8 /* CharacterViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A735458F273407F100EAE5B8 /* CharacterViewCell.xib */; };
+		A747252727376BD6000DCC81 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A747252927376BD6000DCC81 /* Localizable.strings */; };
 		A7898BCF2731C401005BDAC0 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7898BCD2731C401005BDAC0 /* SearchResultCell.swift */; };
 		A7898BD02731C401005BDAC0 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7898BCE2731C401005BDAC0 /* SearchResultCell.xib */; };
 		A7898BD32731D2B1005BDAC0 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7898BD22731D2B1005BDAC0 /* SearchController.swift */; };
@@ -31,6 +32,8 @@
 		A7226A25272CED1300B84FE7 /* CharacterViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterViewCell.swift; sourceTree = "<group>"; };
 		A7226A2B272CEF8800B84FE7 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		A735458F273407F100EAE5B8 /* CharacterViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CharacterViewCell.xib; sourceTree = "<group>"; };
+		A747252827376BD6000DCC81 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A747252F27376C39000DCC81 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A7898BCD2731C401005BDAC0 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		A7898BCE2731C401005BDAC0 /* SearchResultCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
 		A7898BD22731D2B1005BDAC0 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
@@ -126,6 +129,7 @@
 				A7F63C5C272ABB1F007A4B03 /* Assets.xcassets */,
 				A7F63C5E272ABB1F007A4B03 /* LaunchScreen.storyboard */,
 				A7F63C61272ABB20007A4B03 /* Info.plist */,
+				A747252927376BD6000DCC81 /* Localizable.strings */,
 			);
 			path = "Marvel Hub";
 			sourceTree = "<group>";
@@ -182,6 +186,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ar,
 			);
 			mainGroup = A7F63C47272ABB18007A4B03;
 			productRefGroup = A7F63C51272ABB18007A4B03 /* Products */;
@@ -199,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7F63C60272ABB1F007A4B03 /* LaunchScreen.storyboard in Resources */,
+				A747252727376BD6000DCC81 /* Localizable.strings in Resources */,
 				A7F63C5D272ABB1F007A4B03 /* Assets.xcassets in Resources */,
 				A7354590273407F100EAE5B8 /* CharacterViewCell.xib in Resources */,
 				A7898BD02731C401005BDAC0 /* SearchResultCell.xib in Resources */,
@@ -270,6 +276,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		A747252927376BD6000DCC81 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A747252827376BD6000DCC81 /* en */,
+				A747252F27376C39000DCC81 /* ar */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		A7F63C59272ABB18007A4B03 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -293,6 +308,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -354,6 +370,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

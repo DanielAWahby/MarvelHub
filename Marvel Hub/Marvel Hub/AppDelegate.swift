@@ -30,3 +30,9 @@ extension Date {
             return Int64(self.timeIntervalSince1970 * 1000)
     }
 }
+
+extension String {
+    var localizableString: String {
+        NSLocalizedString(self, comment: "")
+    }
+}

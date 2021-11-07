@@ -5,3 +5,14 @@
   Created by Daniel Wahby on 07/11/2021.
   
 */
+
+
+lang = "en";
+
+"cancelText" = "cancel";
+"searchPlaceholder" = "Search for a character...";
+"descriptionTitle" = "Description";
+"comicsTitle" = "Comics";
+"eventsTitle" = "Events";
+"seriesTitle" = "Series";
+"storiesTitle" = "Stories";

@@ -5,3 +5,14 @@
   Created by Daniel Wahby on 07/11/2021.
   
 */
+
+
+lang = "ar";
+
+"cancelText" = "إلغاء";
+"searchPlaceholder" = "البحث عن شخصية ...";
+"descriptionTitle" = "وصف";
+"comicsTitle" = "كاريكاتير";
+"eventsTitle" = "أحداث";
+"seriesTitle" = "مسلسل";
+"storiesTitle" = "قصص";
