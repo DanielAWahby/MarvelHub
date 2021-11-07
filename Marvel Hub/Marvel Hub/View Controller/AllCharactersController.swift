@@ -9,15 +9,38 @@ import UIKit
 import Alamofire
 import CryptoKit
 import SwiftyJSON
+import NVActivityIndicatorView
 
-class ViewController: UIViewController {
+class AllCharactersController: UIViewController {
     var allFetchedcharacters = [Character]()
     let cellIdentifier = "characterCell"
     
    
     
     @IBOutlet weak var charactersTableView:UITableView!
-    @IBOutlet weak var activityIndicator:UIActivityIndicatorView!
+    @IBOutlet weak var activityIndicator:NVActivityIndicatorView!
+    @IBOutlet weak var activityView:UIView!
+
+    let itemsPerPage = 3
+    var currentPage = 3
+    var isFetchingCharacters = false
+    @IBAction func searchPressed(_ sender: Any) {
+        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchController") as? SearchController
+        viewController?.passedResults = allFetchedcharacters
+//        let transition = CATransition()
+//        transition.duration = 0.25
+//        transition.type = CATransitionType.fade
+////        transition.subtype = CATransitionSubtype.fromRight
+////        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.linear)
+//        view.window!.layer.add(transition, forKey: kCATransition)
+        let navigationController = UINavigationController(rootViewController: viewController ?? UIViewController())
+        navigationController.modalTransitionStyle = .crossDissolve
+        navigationController.modalPresentationStyle = .fullScreen
+        present(navigationController , animated: true, completion: {
+            self.allFetchedcharacters.removeAll()
+        })
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         let imageView = UIImageView(image: UIImage(named: "marvel-logo"))
@@ -36,14 +59,20 @@ class ViewController: UIViewController {
         self.charactersTableView.delegate = self
         self.charactersTableView.dataSource = self
         self.charactersTableView.prefetchDataSource = self
-        activityIndicator.startAnimating()
-        getAllCharacters()
+        
+        if allFetchedcharacters.count == 0 {
+            activityView.isHidden = false
+            activityIndicator.startAnimating()
+            getAllCharacters()
+        }
+        
         
     }
     func getAllCharacters(){
-        
+        isFetchingCharacters = true
         let privateApiKey = "5551a75410d177e04fe11fb84e178a2e7eb1ac18"
-        let parameters : [String:Any] = [ "orderBy" : "name","limit":100]
+        let parameters : [String:Any] = [ "orderBy" : "name","limit":itemsPerPage,"offset":currentPage]
+        
         let publicApiKey = "23d9195168af096b4b2c6de3cfa59d06"
         let ts = String(Date().toMillis())
         let apiHash = MD5(string:"\(ts)\(privateApiKey)\(publicApiKey)")
@@ -54,16 +83,22 @@ class ViewController: UIViewController {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else { return }
             do {
-                let charactersList = try JSONDecoder().decode(ResponseModel.self, from: data)
+                let charactersList = try JSONDecoder().decode(ResponseModelCharacter.self, from: data)
                 charactersList.data?.results?.forEach({ (fetchedcharacter) in
                     let character = fetchedcharacter
-                    let newCharacter = Character(id: character.id, name: character.name, description: character.description, thumbnail:character.thumbnail, comics: character.comics, stories: character.stories, events: character.events, series: character.series)
+                    let newCharacter = Character(id: character.id, name: character.name, description: character.description, thumbnail:character.thumbnail)
                     self.allFetchedcharacters.append(newCharacter)
                 })
                 print(self.allFetchedcharacters)
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
+                    UIView.animate(withDuration: 0.5, animations: {
+                        self.activityView.alpha = 0
+                    })
+                    self.activityView.isHidden = true
                     self.charactersTableView.reloadData()
+                    self.currentPage += 1
+                    self.isFetchingCharacters = false
                 }
             } catch let error as NSError {
                 print(error.localizedDescription)
@@ -85,9 +120,18 @@ class ViewController: UIViewController {
     
 }
 
-extension ViewController : UITableViewDelegate, UITableViewDataSource,UITableViewDataSourcePrefetching{
+extension AllCharactersController : UITableViewDelegate, UITableViewDataSource,UITableViewDataSourcePrefetching{
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        print("Prefetching.....")
+        for index in indexPaths {
+            if index.row >= allFetchedcharacters.count - 2 && !isFetchingCharacters{
+                getAllCharacters()
+                break
+            }
+        }
+    }
+    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
+        print("cancel prefetch row of \(indexPaths)")
+
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("\(allFetchedcharacters.count) characters")
@@ -96,10 +140,11 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource,UITableVie
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! CharacterViewCell
+        cell.selectionStyle = .none
         cell.characterNameLabel.text = allFetchedcharacters[indexPath.row].name
         
 //        do {
-//            data = try Data(contentsOf: URL(string: ("\(allFetchedcharacters[indexPath.row].thumbnail?.path)\(allFetchedcharacters[indexPath.row].thumbnail?.imageExtension)")!)
+//        q    data = try Data(contentsOf: URL(string: ("\(allFetchedcharacters[indexPath.row].thumbnail?.path)\(allFetchedcharacters[indexPath.row].thumbnail?.imageExtension)")!)
 //        } catch {
 //            print(error.localizedDescription)
 //        }

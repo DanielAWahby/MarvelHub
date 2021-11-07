@@ -8,4 +8,5 @@ target 'Marvel Hub' do
   # Pods for Marvel Hub
 	pod 'Alamofire', '~> 5.4'
   pod 'SwiftyJSON'
+  pod 'NVActivityIndicatorView'
 end

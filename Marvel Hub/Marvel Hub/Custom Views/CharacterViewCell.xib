@@ -17,6 +17,9 @@
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TIe-AR-Pwd">
                         <rect key="frame" x="0.0" y="0.0" width="331" height="109"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="TIe-AR-Pwd" secondAttribute="height" multiplier="331:109" id="k7c-Kg-9Er"/>
+                        </constraints>
                     </imageView>
                     <visualEffectView opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6yE-fp-MnM">
                         <rect key="frame" x="0.0" y="87" width="331" height="22"/>
