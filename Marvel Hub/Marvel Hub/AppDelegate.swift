@@ -36,3 +36,9 @@ extension String {
         NSLocalizedString(self, comment: "")
     }
 }
+
+extension UIViewController{
+    var isAppArabic : Bool {
+        Locale.current.languageCode == "ar"
+    }
+}

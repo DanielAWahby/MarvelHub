@@ -39,8 +39,10 @@ class CharacterDetailsController: UIViewController {
     @IBOutlet weak var backButtonContainerView: UIVisualEffectView!
     @IBOutlet weak var characterFullName: UILabel!
     @IBOutlet weak var characterImage: UIImageView!
+    @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var desriptionTextView: UITextView!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var backButton: UIButton!
     
     @IBAction func backPressed(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
@@ -49,7 +51,8 @@ class CharacterDetailsController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         backButtonContainerView.layer.cornerRadius = backButtonContainerView.frame.height / 2
-        backButtonContainerView.layer.maskedCorners = [.layerMaxXMinYCorner,.layerMaxXMaxYCorner]
+        backButtonContainerView.layer.maskedCorners = self.isAppArabic ? [.layerMinXMinYCorner,.layerMinXMaxYCorner]: [.layerMaxXMinYCorner,.layerMaxXMaxYCorner]
+        backButton.setImage(self.isAppArabic ? UIImage(named:"ic-back-flipped") : UIImage(named:"ic-back") , for: .normal)
         backButtonContainerView.layer.masksToBounds = true
         characterImage.layer.cornerRadius = 10
         characterImage.clipsToBounds = true
@@ -72,6 +75,8 @@ class CharacterDetailsController: UIViewController {
                 characterImage.image = UIImage(named: "image-placeholder")
             }
         }
+        descriptionLabel.text = "descriptionTitle".localizableString
+        descriptionLabel.textAlignment = self.isAppArabic ? .right : .left
         desriptionTextView.text = descriptionText
         print(descriptionText)
         print("ID: ",characterId)
@@ -174,12 +179,13 @@ extension CharacterDetailsController : UICollectionViewDelegate,UICollectionView
         cell.passedStories = stories
    
         switch indexPath.section {
-        case 0: cell.itemLabel.text = "Comics"
-        case 1: cell.itemLabel.text = "Events"
-        case 2: cell.itemLabel.text = "Series"
+        case 0: cell.itemLabel.text = "comicsTitle".localizableString
+        case 1: cell.itemLabel.text = "eventsTitle".localizableString
+        case 2: cell.itemLabel.text = "seriesTitle".localizableString
         default:
-            cell.itemLabel.text = "Stories"
+            cell.itemLabel.text = "storiesTitle".localizableString
         }
+        cell.itemLabel.textAlignment  = self.isAppArabic ? .right : .left
         cell.onInnerCollectionlShouldUpdate()
         return cell
     }

@@ -28,10 +28,15 @@ class SearchController: UIViewController {
         
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search for a character..."
+        searchController.searchBar.placeholder = "searchPlaceholder".localizableString
+        
         searchController.searchBar.tintColor = UIColor(named: "SubtextColor")
 //        searchController.searchBar.enablesReturnKeyAutomatically = true
         searchController.searchBar.showsCancelButton = true
+        
+        searchController.searchBar.setValue("cancel".localizableString, forKey: "cancelButtonText")
+        
+
         searchController.searchBar.returnKeyType = .done
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
