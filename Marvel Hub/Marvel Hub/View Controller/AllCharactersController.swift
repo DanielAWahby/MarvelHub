@@ -10,8 +10,10 @@ import CryptoKit
 import NVActivityIndicatorView
 
 class AllCharactersController: UIViewController {
+    
     var allFetchedcharacters = [Character]()
-    let cellIdentifier = "characterCell"
+    
+    let cellIdentifier = "characterCellIdentifier".localizableString
     
    
     
@@ -19,8 +21,8 @@ class AllCharactersController: UIViewController {
     @IBOutlet weak var activityIndicator:NVActivityIndicatorView!
     @IBOutlet weak var activityView:UIView!
 
-    let itemsPerPage = 3
-    var currentPage = 3
+    let itemsPerPage = 5
+    var offset = 0
     var isFetchingCharacters = false
     @IBAction func searchPressed(_ sender: Any) {
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchController") as? SearchController
@@ -64,15 +66,13 @@ class AllCharactersController: UIViewController {
     func getAllCharacters(){
         isFetchingCharacters = true
         let privateApiKey = "5551a75410d177e04fe11fb84e178a2e7eb1ac18"
-        let parameters : [String:Any] = [ "orderBy" : "name","limit":itemsPerPage,"offset":currentPage]
         
         let publicApiKey = "23d9195168af096b4b2c6de3cfa59d06"
         let ts = String(Date().toMillis())
         let apiHash = MD5(string:"\(ts)\(privateApiKey)\(publicApiKey)")
-        let allCharactersEndpoint = "https://gateway.marvel.com:443/v1/public/characters?ts=\(ts)&apikey=\(publicApiKey)&hash=\(apiHash)"
+        let allCharactersEndpoint = "https://gateway.marvel.com:443/v1/public/characters?orderBy=name&limit=\(itemsPerPage)&offset=\(offset)&ts=\(ts)&apikey=\(publicApiKey)&hash=\(apiHash)"
         var request = URLRequest(url: URL(string: allCharactersEndpoint)!)
         request.httpMethod = "GET"
-        request.httpBody = parameters as? Data
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else { return }
             do {
@@ -82,7 +82,6 @@ class AllCharactersController: UIViewController {
                     let newCharacter = Character(id: character.id, name: character.name, description: character.description, thumbnail:character.thumbnail)
                     self.allFetchedcharacters.append(newCharacter)
                 })
-                print(self.allFetchedcharacters)
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
                     UIView.animate(withDuration: 0.5, animations: {
@@ -90,7 +89,6 @@ class AllCharactersController: UIViewController {
                     })
                     self.activityView.isHidden = true
                     self.charactersTableView.reloadData()
-                    self.currentPage += 1
                     self.isFetchingCharacters = false
                 }
             } catch let error as NSError {
@@ -117,17 +115,16 @@ extension AllCharactersController : UITableViewDelegate, UITableViewDataSource,U
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         for index in indexPaths {
             if index.row >= allFetchedcharacters.count - 2 && !isFetchingCharacters{
+                activityIndicator.startAnimating()
+                activityView.isHidden = false
+                offset += itemsPerPage
+                print("Offset : \(offset)")
                 getAllCharacters()
                 break
             }
         }
     }
-    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
-        print("cancel prefetch row of \(indexPaths)")
-
-    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("\(allFetchedcharacters.count) characters")
         return allFetchedcharacters.count
     }
     
@@ -135,21 +132,14 @@ extension AllCharactersController : UITableViewDelegate, UITableViewDataSource,U
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! CharacterViewCell
         cell.selectionStyle = .none
         cell.characterNameLabel.text = allFetchedcharacters[indexPath.row].name
+        let path = allFetchedcharacters[indexPath.row].thumbnail!.path ?? "defaultImagePath".localizableString
         
-//        do {
-//        q    data = try Data(contentsOf: URL(string: ("\(allFetchedcharacters[indexPath.row].thumbnail?.path)\(allFetchedcharacters[indexPath.row].thumbnail?.imageExtension)")!)
-//        } catch {
-//            print(error.localizedDescription)
-//        }
-//        let currentCharacterImage = UIImage(data: data!)
-        let path = allFetchedcharacters[indexPath.row].thumbnail!.path ?? "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73"
-//        print("Image Path: ",path)
         if path.contains("image_not_available"){
             cell.characterImage.image = UIImage(named: "image-placeholder")
         }
         else{
             let imageVariation = "landscape_incredible"
-            let imageExtension = allFetchedcharacters[indexPath.row].thumbnail!.imageExtension ?? ".jpg"
+            let imageExtension = allFetchedcharacters[indexPath.row].thumbnail!.imageExtension ?? "defaultImageExtension".localizableString
             let imageUrl = URL(string:"\(path)/\(imageVariation).\(imageExtension)")!
             do {
                 
@@ -173,9 +163,9 @@ extension AllCharactersController : UITableViewDelegate, UITableViewDataSource,U
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CharacterDetailScreen") as? CharacterDetailsController
-        viewController?.characterId = allFetchedcharacters[indexPath.row].id ?? 0
-        viewController?.imagePath = allFetchedcharacters[indexPath.row].thumbnail?.path ?? "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73"
-        viewController?.imageExtension = allFetchedcharacters[indexPath.row].thumbnail?.imageExtension ?? ".jpg"
+        viewController?.characterId = allFetchedcharacters[indexPath.row].id ?? Int("defaultCharacterId".localizableString)!
+        viewController?.imagePath = allFetchedcharacters[indexPath.row].thumbnail?.path ?? "defaultImagePath".localizableString
+        viewController?.imageExtension = allFetchedcharacters[indexPath.row].thumbnail?.imageExtension ?? "defaultImageExtension".localizableString
         viewController?.characterName = allFetchedcharacters[indexPath.row].name ?? "Ultron"
         viewController?.descriptionText =  allFetchedcharacters[indexPath.row].description ?? "Character Description Goes Here."
         

@@ -15,7 +15,7 @@ class SearchController: UIViewController {
     
     var substringToPass = ""
     
-    let cellIdentifier = "ResultCell"
+    let cellIdentifier = "searchResultIdentifier".localizableString
     
     let searchController = UISearchController(searchResultsController: nil)
     
@@ -23,7 +23,6 @@ class SearchController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Total Passed: ",passedResults.count)
         self.view.backgroundColor = .clear
         
         searchController.searchResultsUpdater = self
@@ -66,7 +65,6 @@ extension SearchController:UISearchResultsUpdating,UISearchBarDelegate{
         resultsTableView.reloadData()
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        print("EMPTY ? ",searchBar.text!.isEmpty)
         if searchBar.text == "" && !searchBar.isFirstResponder{
                 let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AllCharacterScreen") as? AllCharactersController
                 viewController?.allFetchedcharacters = passedResults
@@ -138,12 +136,12 @@ extension SearchController:UITableViewDelegate,UITableViewDataSource{
         cell.characterNameLabel.attributedText = attributedString
         
         let imageVariation = "standard_large"
-        let path = ( searchController.isActive ? filteredResults[indexPath.row].thumbnail!.path : passedResults[indexPath.row].thumbnail!.path) ?? "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73"
+        let path = ( searchController.isActive ? filteredResults[indexPath.row].thumbnail!.path : passedResults[indexPath.row].thumbnail!.path) ?? "defaultImagePath".localizableString
         if path.contains("image_not_available"){
                 cell.characterImage.image = UIImage(named: "image-placeholder")
         }
         else{
-            let imageExtension = (searchController.isActive ? filteredResults[indexPath.row].thumbnail!.imageExtension : passedResults[indexPath.row].thumbnail!.imageExtension) ?? ".jpg"
+            let imageExtension = (searchController.isActive ? filteredResults[indexPath.row].thumbnail!.imageExtension : passedResults[indexPath.row].thumbnail!.imageExtension) ?? "defaultImageExtension".localizableString
             let imageUrl = URL(string:"\(path)/\(imageVariation).\(imageExtension)")!
             do {
                 let imageData = try Data(contentsOf: imageUrl)

@@ -9,11 +9,7 @@ import UIKit
 
 class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,CharacterDetailDelegate{
      
-     
-     //    @IBOutlet weak var itemImage: UIImageView!
-     
-     
-     let secondCellId = "secondCellId"
+     let innerItemIdentifier = "characterInnerItemIdentifier".localizableString
      var passedSection = 0
      var passedComics = [Comic]()
      var passedEvents = [Event]()
@@ -37,7 +33,7 @@ class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollect
           addSubview(subItemsCollectionView)
           subItemsCollectionView.dataSource = self
           subItemsCollectionView.delegate = self
-          subItemsCollectionView.register(SubItemCell.self, forCellWithReuseIdentifier: secondCellId)
+          subItemsCollectionView.register(SubItemCell.self, forCellWithReuseIdentifier: innerItemIdentifier)
           addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : subItemsCollectionView]))
           addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : subItemsCollectionView]))
           
@@ -64,7 +60,7 @@ class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollect
           return 1
      }
      func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-          let cell =  collectionView.dequeueReusableCell(withReuseIdentifier: secondCellId, for: indexPath) as! SubItemCell
+          let cell =  collectionView.dequeueReusableCell(withReuseIdentifier: innerItemIdentifier, for: indexPath) as! SubItemCell
           cell.itemTitle.text = getTitleForInnerCell(section: passedSection, row: indexPath.row)
           cell.photoImageView.image = getImageForInnerCell(section: passedSection, row: indexPath.row)
           return cell
@@ -72,7 +68,7 @@ class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollect
      }
      
      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-          return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+          return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
      }
      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
           return 10
@@ -88,32 +84,31 @@ class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollect
      }
      func getImageForInnerCell(section:Int,row:Int)->UIImage{
           var cellImage = UIImage(contentsOfFile: "")
-          var path = "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73"
-          var imageExtension = ".jpg"
+          var path = "defaultImagePath".localizableString
+          var imageExtension = "defaultImageExtension".localizableString
          
           switch section {
           case 0:
-               path = passedComics[row].thumbnail!.path ?? "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73"
-               imageExtension = passedComics[row].thumbnail!.imageExtension ?? imageExtension
+               path = passedComics[row].thumbnail?.path ?? "defaultImagePath".localizableString
+               imageExtension = passedComics[row].thumbnail?.imageExtension ?? ""
           case 1:
-               path = passedEvents[row].thumbnail!.path ?? "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73"
-               imageExtension = passedEvents[row].thumbnail!.imageExtension ?? imageExtension
+               path = passedEvents[row].thumbnail?.path ?? "defaultImagePath".localizableString
+               imageExtension = passedEvents[row].thumbnail?.imageExtension ?? ""
           case 2:
-               path = passedSeries[row].thumbnail!.path ?? "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73"
-               imageExtension = passedSeries[row].thumbnail!.imageExtension ?? imageExtension
+               path = passedSeries[row].thumbnail?.path ?? "defaultImagePath".localizableString
+               imageExtension = passedSeries[row].thumbnail?.imageExtension ?? ""
           case 3:
-               path = passedStories[row].thumbnail!.path ?? "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73"
-               imageExtension = passedStories[row].thumbnail!.imageExtension ?? imageExtension
+               path = passedStories[row].thumbnail?.path ?? "defaultImagePath".localizableString
+               imageExtension = passedStories[row].thumbnail?.imageExtension ?? ""
           default:
-               path = "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73"
-               imageExtension = ".jpg"
+               path = "defaultImagePath".localizableString
+               imageExtension = "defaultImageExtension".localizableString
           }
-          //        print("Image Path: ",path)
           if path.contains("image_not_available"){
                cellImage = UIImage(named: "image-placeholder")
           }
           else{
-               let imageVariation = "portrait_incredible"
+               let imageVariation = "portrait_xlarge"
                
                let imageUrl = URL(string:"\(path)/\(imageVariation).\(imageExtension)")!
                do {
@@ -132,13 +127,13 @@ class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollect
           var title = "Item Title"
           switch section{
           case 0:
-               title = passedComics[row].title ?? title
+               title = passedComics[row].title ?? "defaultComicTitle".localizableString
           case 1:
-               title = passedEvents[row].title ?? title
+               title = passedEvents[row].title ?? "defaultEventTitle".localizableString
           case 2:
-               title = passedSeries[row].title ?? title
+               title = passedSeries[row].title ?? "defaultSeriesTitle".localizableString
           default:
-               title = passedStories[row].title ?? title
+               title = passedStories[row].title ?? "defaultStoryTitle".localizableString
           }
           return title
      }
@@ -155,10 +150,10 @@ class SubItemCell: UICollectionViewCell {
      let itemTitle:UILabel = {
           let label = UILabel()
           label.translatesAutoresizingMaskIntoConstraints = false
-          label.textAlignment = .center
+          label.textAlignment = .left
           label.textColor = .white
           label.numberOfLines = 0
-          label.minimumScaleFactor = 0.2
+          label.minimumScaleFactor = 0.1
           label.font = UIFont.systemFont(ofSize: 10.0,weight: .bold)
           return label
      }()

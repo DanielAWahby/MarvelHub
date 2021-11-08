@@ -21,13 +21,24 @@ lang = "en";
 
 
 // Default values for strings that can be nil.
-
+"defaultCharacterId" = "";
 "defaultCharacterName" = "Ultron";
 "defaultDesriptionText" = "Character description goes here.";
-"defaultPath" = "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73";
-"defaultExtension" = ".jpg";
+"defaultImagePath" = "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73";
+"defaultImageExtension" = ".jpg";
 "defaultComicTitle" = "Marvel Comic";
 "defaultEventTitle" = "Marvel Event";
 "defaultSeriesTitle" = "Marvel Series";
 "defaultStoryTitle" = "Marvel Story";
 
+// TableView and CollectionView Cells' Identifiers
+
+"characterCellIdentifier" = "characterCell";
+
+"characterItemIdentifier" = "characterItem";
+
+"characterItemHeaderIdentifier" = "Header";
+
+"characterInnerItemIdentifier" = "characterInnerItem";
+
+"searchResultIdentifier" = "ResultCell";

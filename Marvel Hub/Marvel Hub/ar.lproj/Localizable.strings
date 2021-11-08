@@ -20,15 +20,26 @@ lang = "ar";
 "storiesTitle" = "قصص";
 
 
+
 // Default values for strings that can be nil.
-
+"defaultCharacterId" = "1009146";
 "defaultCharacterName" = "Ultron";
-"defaultDesriptionText" = "هنا وصف الشخصية";
-"defaultPath" = "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73";
-"defaultExtension" = ".jpg";
-"defaultComicTitle" = "كاريكاتير Marvel";
-"defaultEventTitle" = "مناسبة Marvel";
-"defaultSeriesTitle" = "مسلسل Marvel";
-"defaultStoryTitle" = "قصة Marvel";
+"defaultDesriptionText" = "Character description goes here.";
+"defaultImagePath" = "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73";
+"defaultImageExtension" = ".jpg";
+"defaultComicTitle" = "Marvel Comic";
+"defaultEventTitle" = "Marvel Event";
+"defaultSeriesTitle" = "Marvel Series";
+"defaultStoryTitle" = "Marvel Story";
 
+// TableView and CollectionView Cells' Identifiers
 
+"characterCellIdentifier" = "characterCell";
+
+"characterItemIdentifier" = "characterItem";
+
+"characterItemHeaderIdentifier" = "Header";
+
+"characterInnerItemIdentifier" = "characterInnerItem";
+
+"searchResultIdentifier" = "ResultCell";
