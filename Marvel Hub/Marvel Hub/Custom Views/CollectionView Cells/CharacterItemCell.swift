@@ -7,20 +7,30 @@
 
 import UIKit
 
+// MARK:- Definition of protocol required for presenting the item's overlay view from the inner collectionView cell through the Character Details controller
 protocol ItemSelectionDelegate: NSObjectProtocol {
      func presentPopOverViewController(image:UIImage,itemName:String) -> ()
 }
 
+// MARK:- CollectionView cell for the Character Details Controller
+
 class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,CharacterDetailDelegate{
-     
+//     MARK:- An identifier for the inner collection cell within the upper main cell
      let innerItemIdentifier = "characterInnerItemIdentifier".localizableString
+
+//     MARK:- Passed section number from Character Details View Controller to cell
      var passedSection = 0
+
+//     MARK:- Passed Items from View Controller to cell
      var passedComics = [Comic]()
      var passedEvents = [Event]()
      var passedSeries = [Series]()
      var passedStories = [Story]()
      
+//     MARK:- An instance of the protocol defined above to be used within the cell.
      weak var delegate : ItemSelectionDelegate?
+
+//     MARK:- Defining the inner collection view that includes all items within each character's item category.
      let subItemsCollectionView: UICollectionView = {
           let layout = UICollectionViewFlowLayout()
           layout.scrollDirection = .horizontal
@@ -35,10 +45,14 @@ class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollect
      
      override init(frame: CGRect) {
           super.init(frame: frame)
+//          MARK:- Adding the inner collection view to the cell's view and defining its delegate and datasource properties.
           addSubview(subItemsCollectionView)
           subItemsCollectionView.dataSource = self
           subItemsCollectionView.delegate = self
+//          MARK:- Registration of the inner collection view cell.
           subItemsCollectionView.register(SubItemCell.self, forCellWithReuseIdentifier: innerItemIdentifier)
+
+//          MARK:- Programmatically adding the inner collection view's layout constraints.
           addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : subItemsCollectionView]))
           addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : subItemsCollectionView]))
           
@@ -48,7 +62,7 @@ class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollect
      required init?(coder aDecoder: NSCoder) {
           fatalError("init(coder:) has not been implemented")
      }
-     
+//     MARK:- Defining the number of items in each character item categories.
      func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
           switch passedSection {
           case 0:
@@ -61,9 +75,12 @@ class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollect
                return passedStories.count
           }
      }
+//     MARK:- Defining the number of sections of the inner collection view. The number is set to '1' since we treat each cell that is dequeued from the view controller as its own section that contains the items of a category
+     
      func numberOfSections(in collectionView: UICollectionView) -> Int {
           return 1
      }
+//     MARK:- Dequeuing the inner collectionview cells.
      func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
           let cell =  collectionView.dequeueReusableCell(withReuseIdentifier: innerItemIdentifier, for: indexPath) as! SubItemCell
           cell.cellSection = passedSection
@@ -72,25 +89,20 @@ class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollect
           return cell
           
      }
-     
-     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-          return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-     }
-     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-          return 10
-     }
+// MARK:- Size for each inner item.
      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-          return CGSize(width: frame.width / 3, height: 150)
+          return CGSize(width: frame.width / 3 - 10, height: 150)
      }
+// MARK:- Calling the delegate method when an inner collection view cell is pressed
      func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
           let section =  (collectionView.dequeueReusableCell(withReuseIdentifier: innerItemIdentifier, for: indexPath) as! SubItemCell).cellSection
-          print("Cell Section: ",section)
-          print("Item Selected - ",getTitleForInnerCell(section: indexPath., row: indexPath.row))
-          self.delegate?.presentPopOverViewController(image: getImageForInnerCell(section: indexPath.section, row: indexPath.row), itemName: getTitleForInnerCell(section: indexPath.section, row: indexPath.row))
+          self.delegate?.presentPopOverViewController(image: getImageForInnerCell(section: section, row: indexPath.row), itemName: getTitleForInnerCell(section: indexPath.section, row: indexPath.row))
      }
+//     MARK:- A function used to notify this view cell that it should update its inner collectionView.
      func onInnerCollectionlShouldUpdate() {
           self.subItemsCollectionView.reloadData()
      }
+//    MARK:- A function used to retrieve each item's image given the the item's current section (category) and its row (index within the cetgory array).
      func getImageForInnerCell(section:Int,row:Int)->UIImage{
           var cellImage = UIImage(contentsOfFile: "")
           var path = "defaultImagePath".localizableString
@@ -132,6 +144,7 @@ class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollect
           
           return cellImage ?? UIImage(named: "image-placeholder")!
      }
+//    MARK:- A function used to retrieve each item's title text given the the item's current section (category) and its row (index within the cetgory array).
      func getTitleForInnerCell(section:Int,row:Int)->String{
           var title = "Item Title"
           switch section{
@@ -147,7 +160,7 @@ class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollect
           return title
      }
 }
-
+// MARK:- Definition of the Inner Item Cell.
 class SubItemCell: UICollectionViewCell {
      let photoImageView: UIImageView = {
           let imageView = UIImageView()
@@ -170,6 +183,8 @@ class SubItemCell: UICollectionViewCell {
      override init(frame: CGRect) {
           super.init(frame: frame)
           addSubview(photoImageView)
+//          MARK:- Programmatically adding the inner cell's layout constraints for the inner cell's imageView and title label.
+
           photoImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
           photoImageView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
           photoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant:0).isActive = true

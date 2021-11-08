@@ -9,22 +9,30 @@ import UIKit
 import NVActivityIndicatorView
 
 class SearchController: UIViewController {
-    
+    // MARK:- Definition of Character Array
+    //    An array that is constantly populated whenever the API call to get all the matching characters occurs and that is then used to populate the search results tableView
     var characters = [Character]()
-        
-    var substringToPass = ""
-    
+// MARK:- Definition of the search results tableView cell's reuseIdentifier
     let cellIdentifier = "searchResultIdentifier".localizableString
     
+//    MARK:- Definition of the search controller
     let searchController = UISearchController(searchResultsController: nil)
     
+    //    MARK:- Other Variables
+    //  A flag that is used to trigger this View Controller's transition when it's retrieved back from another View Controller.
     var isCoolTransition = true
+    //  A string that is used in the implementation of the highlighting of each of the relevant search results.
+    var substringToPass = ""
+    
+//  MARK:- Storyboard's IBOutlet definintions
     @IBOutlet weak var resultsTableView:UITableView!
     @IBOutlet weak var activityView:UIView!
     @IBOutlet weak var activityIndicatorView:NVActivityIndicatorView!
     
+//  MARK:- View Lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
+//  MARK:- Checking whether the View Controller's transition should be triggered.
         if isCoolTransition {
             let transition = CATransition()
             transition.type = CATransitionType.moveIn
@@ -56,14 +64,28 @@ class SearchController: UIViewController {
     }
     
 }
+
 extension SearchController:UISearchResultsUpdating,UISearchBarDelegate{
+    //    MARK:- Handling the changes in the searchController's search bar text
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
         let searchText = searchBar.text
         substringToPass = String(searchText ?? "")
         getCharacterByName(name: searchText ?? "")
-        //        filterResults(searchText ?? "")
     }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if (searchBar.text == "") {
+            getCharacterByName(name: "")
+        }
+    }
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        if (searchBar.text != "") {
+            getCharacterByName(name:"")
+        }
+    }
+    
+    //    MARK:- A Function to retrive all characters by name
+    //    The name is passed from the search bar's text to the function and used as in GET request.
     func getCharacterByName(name:String){
         activityView.isHidden = false
         activityIndicatorView.startAnimating()
@@ -79,6 +101,7 @@ extension SearchController:UISearchResultsUpdating,UISearchBarDelegate{
         else{
             charactersEndpoint = "https://gateway.marvel.com:443/v1/public/characters?orderBy=name&nameStartsWith=\(name)&limit=100&ts=\(ts)&apikey=\(publicApiKey)&hash=\(apiHash)"
         }
+        // Emptying the results character before each request to avoid inconsistent results
         characters.removeAll()
         var request = URLRequest(url: URL(string: charactersEndpoint)!)
         request.httpMethod = "GET"
@@ -88,7 +111,6 @@ extension SearchController:UISearchResultsUpdating,UISearchBarDelegate{
                 let charactersList = try JSONDecoder().decode(ResponseModelCharacter.self, from: data)
                 charactersList.data?.results?.forEach({ (fetchedcharacter) in
                     let character = fetchedcharacter
-                    print(character.name)
                     let newCharacter = Character(id: character.id, name: character.name, description: character.description, thumbnail:character.thumbnail)
                     self.characters.append(newCharacter)
                 })
@@ -106,17 +128,7 @@ extension SearchController:UISearchResultsUpdating,UISearchBarDelegate{
         task.resume()
         
     }
-    //    func filterResults(_ searchText:String){
-    //        filteredResults = characters.filter({ character in
-    //            if searchController.searchBar.text != ""{
-    //                let searchTextMatch = character.name!.contains(searchText)
-    //                substringToPass = String(searchText)
-    //                return searchTextMatch
-    //            }
-    //            return false
-    //        })
-    //        resultsTableView.reloadData()
-    //    }
+    //    MARK:- Handling the search bar's Cancel button Actions
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         if searchBar.text == "" && !searchBar.isFirstResponder{
             let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AllCharacterScreen") as? AllCharactersController
@@ -134,35 +146,24 @@ extension SearchController:UISearchResultsUpdating,UISearchBarDelegate{
         
     }
     
-    //    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-    //        if ((searchBar.text?.isEmpty) != nil) {
-    //            searchBar.resignFirstResponder()
-    //        }
-    //    }
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if (searchBar.text == "") {
-            getCharacterByName(name: "")
-        }
-    }
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        if (searchBar.text != "") {
-            getCharacterByName(name:"")
-        }
-    }
 }
 extension SearchController:UITableViewDelegate,UITableViewDataSource{
+//    MARK:- Defining the number of cells in tableView
+    //    This number of cell in the tableView corresponds to the number of search results that are retrieved from the API call.
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return characters.count
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
+//    MARK:- Dequeuing each search result cell
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = resultsTableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! SearchResultCell
         
         let characterName = characters[indexPath.row].name
         cell.characterNameLabel.text = characterName
-        
+//        MARK:- Highlight Relevant Character in a search result cell (Bonus)
         let attributedString = NSMutableAttributedString(string:characterName ?? characterName ?? "defaultCharacterName".localizableString)
         if searchController.isActive {
             let inputLength = attributedString.string.count
@@ -178,6 +179,8 @@ extension SearchController:UITableViewDelegate,UITableViewDataSource{
             }
         }
         cell.characterNameLabel.attributedText = attributedString
+//      MARK:- Handling Character Image in a search result cell
+        // If the path contains the string : "image_not_available" or an error occurs when downloading the image, the default image placeholder should be used. Otherwise the corresponding image should be used.
         
         let imageVariation = "standard_large"
         let path = (characters[indexPath.row].thumbnail!.path) ?? "defaultImagePath".localizableString

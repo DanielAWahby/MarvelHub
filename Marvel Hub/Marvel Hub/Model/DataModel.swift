@@ -8,16 +8,23 @@
 
 import Foundation
 
+//MARK:-  An outermost wrapper model for a Marvel Character with the variables needed to quickly decode the response.
+
 struct ResponseModelCharacter:Codable{
     var code:Int?
     var status:String?
     var data:DataObjCharacter?
 }
 
+//MARK:- Itermediate Character model.
+
 struct DataObjCharacter:Codable{
     var total:Int?
     var results:[Character]?
 }
+
+//MARK:- A Marvel character model with all the character's attributes.
+
 struct Character:Codable {
     var id:Int?
     var name:String?
@@ -36,12 +43,7 @@ struct DataObjComic:Codable{
     var results:[Comic]?
 }
 
-//struct ComicList:Codable {
-//    var available:Int?
-//    var returned:Int?
-//    var collectionURI:String?
-//    var items:[ComicSummary]?
-//}
+//MARK:- A Marvel comic model with all the comic's attributes.
 
 struct Comic:Codable {
     var id:Int?
@@ -59,6 +61,9 @@ struct DataObjEvent:Codable{
     var total:Int?
     var results:[Event]?
 }
+
+//MARK:- A Marvel event model with all the comic's attributes.
+
 struct Event:Codable {
     var id:Int?
     var title:String?
@@ -74,6 +79,9 @@ struct DataObjSeries:Codable{
     var total:Int?
     var results:[Series]?
 }
+
+//MARK:- A Marvel series model with all the comic's attributes.
+
 struct Series:Codable {
     var id:Int?
     var title:String?
@@ -89,6 +97,9 @@ struct DataObjStories:Codable{
     var total:Int?
     var results:[Story]?
 }
+
+//MARK:- A Marvel story model with all the comic's attributes.
+
 struct Story:Codable {
     var id:Int?
     var title:String?
@@ -96,6 +107,7 @@ struct Story:Codable {
     
 }
 
+//MARK:- An image thumbnail model that is shared among all models with the image extension attribute renamed to "imageExtension" so as not to clash with Swift's "extension" keyword
 struct Image:Codable {
     var path:String?
     var imageExtension:String?

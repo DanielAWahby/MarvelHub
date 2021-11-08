@@ -7,11 +7,13 @@
 
 import UIKit
 
+// MARK:- A collectionView header for the Character Details Controller
+
 class Header: UICollectionReusableView {
     @IBOutlet weak var characterItemLabel:UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
     
 }

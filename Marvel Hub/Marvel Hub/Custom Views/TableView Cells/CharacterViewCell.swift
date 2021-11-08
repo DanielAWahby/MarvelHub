@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK:- All Characters Controller's Table View Cell
+
 class CharacterViewCell: UITableViewCell {
     @IBOutlet weak var characterImage: UIImageView!
     @IBOutlet weak var characterNameLabel: UILabel!
@@ -16,14 +18,9 @@ class CharacterViewCell: UITableViewCell {
         // Initialization code
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
+// MARK:- Padding for the Character View Cell
     override func layoutSubviews() {
         super.layoutSubviews()
-        //set the values for top,left,bottom,right margins
         let margins = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
         contentView.frame = contentView.frame.inset(by: margins)
     }
