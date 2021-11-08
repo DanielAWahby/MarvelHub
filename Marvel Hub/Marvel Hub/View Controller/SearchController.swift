@@ -6,13 +6,12 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
 
 class SearchController: UIViewController {
     
-    var passedResults = [Character]()
-    
-    var filteredResults = [Character]()
-    
+    var characters = [Character]()
+        
     var substringToPass = ""
     
     let cellIdentifier = "searchResultIdentifier".localizableString
@@ -20,7 +19,8 @@ class SearchController: UIViewController {
     let searchController = UISearchController(searchResultsController: nil)
     
     @IBOutlet weak var resultsTableView:UITableView!
-    
+    @IBOutlet weak var activityView:UIView!
+    @IBOutlet weak var activityIndicatorView:NVActivityIndicatorView!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .clear
@@ -30,12 +30,12 @@ class SearchController: UIViewController {
         searchController.searchBar.placeholder = "searchPlaceholder".localizableString
         
         searchController.searchBar.tintColor = UIColor(named: "SubtextColor")
-//        searchController.searchBar.enablesReturnKeyAutomatically = true
+        //        searchController.searchBar.enablesReturnKeyAutomatically = true
         searchController.searchBar.showsCancelButton = true
         
         searchController.searchBar.setValue("cancel".localizableString, forKey: "cancelButtonText")
         
-
+        
         searchController.searchBar.returnKeyType = .done
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
@@ -43,7 +43,7 @@ class SearchController: UIViewController {
         resultsTableView.register(UINib(nibName: "SearchResultCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
         resultsTableView.delegate = self
         resultsTableView.dataSource = self
-        
+        getCharacterByName(name:"")
     }
     
 }
@@ -51,64 +51,103 @@ extension SearchController:UISearchResultsUpdating,UISearchBarDelegate{
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
         let searchText = searchBar.text
-        filterResults(searchText ?? "")
+        substringToPass = String(searchText ?? "")
+        getCharacterByName(name: searchText ?? "")
+        //        filterResults(searchText ?? "")
     }
-    func filterResults(_ searchText:String){
-        filteredResults = passedResults.filter({ character in
-            if searchController.searchBar.text != ""{
-                let searchTextMatch = character.name!.contains(searchText)
-                substringToPass = String(searchText)
-                return searchTextMatch
+    func getCharacterByName(name:String){
+        activityView.isHidden = false
+        activityIndicatorView.startAnimating()
+        let privateApiKey = "5551a75410d177e04fe11fb84e178a2e7eb1ac18"
+        let publicApiKey = "23d9195168af096b4b2c6de3cfa59d06"
+        let ts = String(Date().toMillis())
+        let apiHash = "\(ts)\(privateApiKey)\(publicApiKey)".md5
+        var charactersEndpoint = "https://gateway.marvel.com:443/v1/public/characters?orderBy=name&ts=\(ts)&apikey=\(publicApiKey)&hash=\(apiHash)"
+        print("Name: \(name)")
+        if name.count == 0 {
+            charactersEndpoint = "https://gateway.marvel.com:443/v1/public/characters?orderBy=name&ts=\(ts)&apikey=\(publicApiKey)&hash=\(apiHash)"
+        }
+        else{
+            charactersEndpoint = "https://gateway.marvel.com:443/v1/public/characters?orderBy=name&nameStartsWith=\(name)&limit=100&ts=\(ts)&apikey=\(publicApiKey)&hash=\(apiHash)"
+        }
+        characters.removeAll()
+        var request = URLRequest(url: URL(string: charactersEndpoint)!)
+        request.httpMethod = "GET"
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else { return }
+            do {
+                let charactersList = try JSONDecoder().decode(ResponseModelCharacter.self, from: data)
+                charactersList.data?.results?.forEach({ (fetchedcharacter) in
+                    let character = fetchedcharacter
+                    print(character.name)
+                    let newCharacter = Character(id: character.id, name: character.name, description: character.description, thumbnail:character.thumbnail)
+                    self.characters.append(newCharacter)
+                })
+                DispatchQueue.main.async {
+                    if !self.characters.isEmpty{
+                        self.activityView.isHidden = true
+                        self.activityIndicatorView.stopAnimating()
+                        self.resultsTableView.reloadData()
+                    }
+                }
+            } catch let error as NSError {
+                print(error.localizedDescription)
             }
-            return false
-        })
-        resultsTableView.reloadData()
+        }
+        task.resume()
+        
     }
+    //    func filterResults(_ searchText:String){
+    //        filteredResults = characters.filter({ character in
+    //            if searchController.searchBar.text != ""{
+    //                let searchTextMatch = character.name!.contains(searchText)
+    //                substringToPass = String(searchText)
+    //                return searchTextMatch
+    //            }
+    //            return false
+    //        })
+    //        resultsTableView.reloadData()
+    //    }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         if searchBar.text == "" && !searchBar.isFirstResponder{
-                let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AllCharacterScreen") as? AllCharactersController
-                viewController?.allFetchedcharacters = passedResults
-                //            let transition = CATransition()
-                //            transition.type = CATransitionType.fade
-                //            transition.subtype = CATransitionSubtype.fromRight
-                //            //        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeOut)
-                //            view.window!.layer.add(transition, forKey: kCATransition)
-                let navigtionController = UINavigationController(rootViewController:viewController ?? UIViewController())
-                navigtionController.modalPresentationStyle = .fullScreen
-                navigationController?.modalTransitionStyle = .crossDissolve
-                present(navigtionController, animated: true, completion: nil)
+            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AllCharacterScreen") as? AllCharactersController
+            //            let transition = CATransition()
+            //            transition.type = CATransitionType.fade
+            //            transition.subtype = CATransitionSubtype.fromRight
+            //            //        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeOut)
+            //            view.window!.layer.add(transition, forKey: kCATransition)
+            let navigtionController = UINavigationController(rootViewController:viewController ?? UIViewController())
+            navigtionController.modalPresentationStyle = .fullScreen
+            navigationController?.modalTransitionStyle = .crossDissolve
+            present(navigtionController, animated: true, completion: nil)
         }
         else{
             searchBar.text = ""
+            getCharacterByName(name:"")
             searchBar.resignFirstResponder()
         }
         
     }
     
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        if ((searchBar.text?.isEmpty) != nil) {
-//            searchBar.resignFirstResponder()
-//        }
-//    }
+    //    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    //        if ((searchBar.text?.isEmpty) != nil) {
+    //            searchBar.resignFirstResponder()
+    //        }
+    //    }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if (searchBar.text == "") {
-            filteredResults = passedResults
-            resultsTableView.reloadData()
+            getCharacterByName(name: "")
         }
     }
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         if (searchBar.text == "") {
-            filteredResults = passedResults
-            resultsTableView.reloadData()
+            getCharacterByName(name:"")
         }
     }
 }
 extension SearchController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchController.isActive {
-            return filteredResults.count
-        }
-        return passedResults.count
+        return characters.count
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
@@ -116,10 +155,10 @@ extension SearchController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = resultsTableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! SearchResultCell
         
-        let characterName = searchController.isActive ? filteredResults[indexPath.row].name : passedResults[indexPath.row].name
+        let characterName = characters[indexPath.row].name
         cell.characterNameLabel.text = characterName
         
-        let attributedString = NSMutableAttributedString(string:characterName ?? characterName ?? "MARVEL CHARACTER")
+        let attributedString = NSMutableAttributedString(string:characterName ?? characterName ?? "defaultCharacterName".localizableString)
         if searchController.isActive {
             let inputLength = attributedString.string.count
             let searchString = substringToPass
@@ -136,12 +175,12 @@ extension SearchController:UITableViewDelegate,UITableViewDataSource{
         cell.characterNameLabel.attributedText = attributedString
         
         let imageVariation = "standard_large"
-        let path = ( searchController.isActive ? filteredResults[indexPath.row].thumbnail!.path : passedResults[indexPath.row].thumbnail!.path) ?? "defaultImagePath".localizableString
+        let path = (characters[indexPath.row].thumbnail!.path) ?? "defaultImagePath".localizableString
         if path.contains("image_not_available"){
-                cell.characterImage.image = UIImage(named: "image-placeholder")
+            cell.characterImage.image = UIImage(named: "image-placeholder")
         }
         else{
-            let imageExtension = (searchController.isActive ? filteredResults[indexPath.row].thumbnail!.imageExtension : passedResults[indexPath.row].thumbnail!.imageExtension) ?? "defaultImageExtension".localizableString
+            let imageExtension = (characters[indexPath.row].thumbnail!.imageExtension) ?? "defaultImageExtension".localizableString
             let imageUrl = URL(string:"\(path)/\(imageVariation).\(imageExtension)")!
             do {
                 let imageData = try Data(contentsOf: imageUrl)

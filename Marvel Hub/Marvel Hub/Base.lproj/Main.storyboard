@@ -14,7 +14,7 @@
             <objects>
                 <viewController storyboardIdentifier="AllCharacterScreen" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" userLabel="All Characters Controller" customClass="AllCharactersController" customModule="Marvel_Hub" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="756"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="-1" sectionFooterHeight="28" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kPI-jb-4ri">
@@ -27,10 +27,10 @@
                                 </connections>
                             </tableView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gbT-JF-XyL">
-                                <rect key="frame" x="165.66666666666666" y="680.33333333333337" width="58.666666666666657" height="58.666666666666629"/>
+                                <rect key="frame" x="175.66666666666666" y="690.33333333333337" width="39" height="39"/>
                                 <subviews>
                                     <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="cI8-f2-Rho" customClass="NVActivityIndicatorView" customModule="NVActivityIndicatorView">
-                                        <rect key="frame" x="0.0" y="0.0" width="58.666666666666664" height="58.666666666666664"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="39" height="39"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="cI8-f2-Rho" secondAttribute="height" multiplier="1:1" id="mev-R5-8Sn"/>
@@ -46,7 +46,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.90000000000000002" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arc-reactor" translatesAutoresizingMaskIntoConstraints="NO" id="uX5-DH-Ote">
-                                        <rect key="frame" x="0.0" y="0.0" width="58.666666666666664" height="58.666666666666664"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="39" height="39"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="uX5-DH-Ote" secondAttribute="height" multiplier="1:1" id="ePg-De-Q8M"/>
@@ -73,8 +73,8 @@
                             <constraint firstItem="kPI-jb-4ri" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Evk-vU-ZfS"/>
                             <constraint firstItem="gbT-JF-XyL" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="apk-78-6be"/>
                             <constraint firstItem="kPI-jb-4ri" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.9" id="bKp-qW-E17"/>
-                            <constraint firstItem="gbT-JF-XyL" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.15" id="giv-Vf-yZk"/>
-                            <constraint firstItem="kPI-jb-4ri" firstAttribute="bottom" secondItem="gbT-JF-XyL" secondAttribute="top" id="pzW-Df-Sx1"/>
+                            <constraint firstItem="gbT-JF-XyL" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.1" id="giv-Vf-yZk"/>
+                            <constraint firstItem="gbT-JF-XyL" firstAttribute="top" secondItem="kPI-jb-4ri" secondAttribute="bottom" constant="10" id="pzW-Df-Sx1"/>
                             <constraint firstItem="kPI-jb-4ri" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="txq-kP-ee6"/>
                         </constraints>
                     </view>
@@ -176,7 +176,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8US-Ct-Jqt">
-                                            <rect key="frame" x="0.0" y="0.0" width="58.666666666666664" height="33.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="58" height="34"/>
                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <inset key="imageEdgeInsets" minX="19" minY="10" maxX="19" maxY="10"/>
                                             <state key="normal" image="ic-back"/>
@@ -258,18 +258,58 @@
                                 </view>
                                 <blurEffect style="dark"/>
                             </visualEffectView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DOz-Qz-kZq">
+                                <rect key="frame" x="165.66666666666666" y="392.66666666666669" width="58.666666666666657" height="58.666666666666686"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZGG-4U-nGB" customClass="NVActivityIndicatorView" customModule="NVActivityIndicatorView">
+                                        <rect key="frame" x="3" y="3" width="52.666666666666664" height="52.666666666666664"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="ZGG-4U-nGB" secondAttribute="height" multiplier="1:1" id="YMq-QO-g9D"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="typeName" value="circleStrokeSpin"/>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="color">
+                                                <color key="value" red="0.0" green="0.65550678279999997" blue="0.94820028540000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arc-reactor" translatesAutoresizingMaskIntoConstraints="NO" id="ZEZ-LC-B0D">
+                                        <rect key="frame" x="0.0" y="0.0" width="58.666666666666664" height="58.666666666666664"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="ZEZ-LC-B0D" secondAttribute="height" multiplier="1:1" id="Mtk-Q6-f1y"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="ZGG-4U-nGB" firstAttribute="width" secondItem="DOz-Qz-kZq" secondAttribute="width" multiplier="0.9" id="1Dr-ww-JV3"/>
+                                    <constraint firstItem="ZEZ-LC-B0D" firstAttribute="width" secondItem="DOz-Qz-kZq" secondAttribute="width" id="7ws-DD-dvV"/>
+                                    <constraint firstItem="ZEZ-LC-B0D" firstAttribute="centerX" secondItem="DOz-Qz-kZq" secondAttribute="centerX" id="A3P-Qd-FFW"/>
+                                    <constraint firstItem="ZGG-4U-nGB" firstAttribute="centerY" secondItem="DOz-Qz-kZq" secondAttribute="centerY" id="B8E-CP-Dla"/>
+                                    <constraint firstItem="ZEZ-LC-B0D" firstAttribute="centerY" secondItem="DOz-Qz-kZq" secondAttribute="centerY" id="kBc-qF-f5d"/>
+                                    <constraint firstAttribute="width" secondItem="DOz-Qz-kZq" secondAttribute="height" multiplier="1:1" id="m1D-jC-GjH"/>
+                                    <constraint firstItem="ZGG-4U-nGB" firstAttribute="centerX" secondItem="DOz-Qz-kZq" secondAttribute="centerX" id="yfg-s5-WJs"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="etQ-Pg-R4Y"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="mRL-OO-zcf" firstAttribute="width" secondItem="heg-zg-0EK" secondAttribute="width" id="8XG-PA-pDG"/>
+                            <constraint firstItem="DOz-Qz-kZq" firstAttribute="width" secondItem="heg-zg-0EK" secondAttribute="width" multiplier="0.15" id="IEi-Ih-vnU"/>
                             <constraint firstItem="mRL-OO-zcf" firstAttribute="centerX" secondItem="heg-zg-0EK" secondAttribute="centerX" id="MjA-EI-aHK"/>
+                            <constraint firstItem="DOz-Qz-kZq" firstAttribute="centerY" secondItem="heg-zg-0EK" secondAttribute="centerY" id="SE0-Fu-12Z"/>
                             <constraint firstItem="mRL-OO-zcf" firstAttribute="height" secondItem="heg-zg-0EK" secondAttribute="height" id="iIk-db-SkD"/>
                             <constraint firstItem="mRL-OO-zcf" firstAttribute="centerY" secondItem="heg-zg-0EK" secondAttribute="centerY" id="lLF-zh-5wL"/>
+                            <constraint firstItem="DOz-Qz-kZq" firstAttribute="centerX" secondItem="heg-zg-0EK" secondAttribute="centerX" id="to5-YG-L0V"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="V1e-1L-IqY"/>
                     <connections>
+                        <outlet property="activityIndicatorView" destination="ZGG-4U-nGB" id="iIO-RS-fhS"/>
+                        <outlet property="activityView" destination="DOz-Qz-kZq" id="1JD-7X-64w"/>
                         <outlet property="resultsTableView" destination="f4b-Hs-cIR" id="Tb2-Cc-dcD"/>
                     </connections>
                 </viewController>

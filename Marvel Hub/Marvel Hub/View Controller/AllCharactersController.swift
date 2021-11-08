@@ -15,19 +15,18 @@ class AllCharactersController: UIViewController {
     
     let cellIdentifier = "characterCellIdentifier".localizableString
     
-   
+    
     
     @IBOutlet weak var charactersTableView:UITableView!
     @IBOutlet weak var activityIndicator:NVActivityIndicatorView!
     @IBOutlet weak var activityView:UIView!
-
+    
     let itemsPerPage = 5
     var offset = 0
     var isFetchingCharacters = false
     @IBAction func searchPressed(_ sender: Any) {
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchController") as? SearchController
-        viewController?.passedResults = allFetchedcharacters
-
+        
         let navigationController = UINavigationController(rootViewController: viewController ?? UIViewController())
         navigationController.modalTransitionStyle = .crossDissolve
         navigationController.modalPresentationStyle = .fullScreen
@@ -39,31 +38,29 @@ class AllCharactersController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let imageView = UIImageView(image: UIImage(named: "marvel-logo"))
-//      im
-//        imageView.contentMode = .
+        //      im
+        //        imageView.contentMode = .
         imageView.contentScaleFactor = 2
-//        self.navigationController?.navigationBar.prefersLargeTitles = true
-//        
-//        self.navigationController?.navigationBar.layer.cornerRadius = 5
-//        self.navigationController?.navigationBar.layer.masksToBounds = true
+        //        self.navigationController?.navigationBar.prefersLargeTitles = true
+        //
+        //        self.navigationController?.navigationBar.layer.cornerRadius = 5
+        //        self.navigationController?.navigationBar.layer.masksToBounds = true
         self.navigationController?.navigationBar.layer.maskedCorners = [.layerMinXMaxYCorner,.layerMaxXMaxYCorner]
         self.navigationItem.titleView = imageView
         
-//        self.
+        //        self.
         self.charactersTableView.register(UINib(nibName: "CharacterViewCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
         self.charactersTableView.delegate = self
         self.charactersTableView.dataSource = self
         self.charactersTableView.prefetchDataSource = self
         
-        if allFetchedcharacters.count == 0 {
-            activityView.isHidden = false
-            activityIndicator.startAnimating()
-            getAllCharacters()
-        }
+        getAllCharacters()
         
         
     }
     func getAllCharacters(){
+        activityView.isHidden = false
+        activityIndicator.startAnimating()
         isFetchingCharacters = true
         let privateApiKey = "5551a75410d177e04fe11fb84e178a2e7eb1ac18"
         
@@ -84,9 +81,6 @@ class AllCharactersController: UIViewController {
                 })
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
-                    UIView.animate(withDuration: 0.5, animations: {
-                        self.activityView.alpha = 0
-                    })
                     self.activityView.isHidden = true
                     self.charactersTableView.reloadData()
                     self.isFetchingCharacters = false
@@ -98,9 +92,7 @@ class AllCharactersController: UIViewController {
         task.resume()
         
     }
-//    func getCurrentCharacterItems( characterId:Int)->([ComicList],[EventList],[SeriesList]){
-//
-//    }
+    
     func MD5(string: String) -> String {
         let digest = Insecure.MD5.hash(data: string.data(using: .utf8) ?? Data())
         
@@ -115,10 +107,7 @@ extension AllCharactersController : UITableViewDelegate, UITableViewDataSource,U
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         for index in indexPaths {
             if index.row >= allFetchedcharacters.count - 2 && !isFetchingCharacters{
-                activityIndicator.startAnimating()
-                activityView.isHidden = false
                 offset += itemsPerPage
-                print("Offset : \(offset)")
                 getAllCharacters()
                 break
             }
@@ -153,7 +142,7 @@ extension AllCharactersController : UITableViewDelegate, UITableViewDataSource,U
         cell.contentView.layer.cornerRadius = 10
         cell.characterImage.layer.cornerRadius = 10
         cell.clipsToBounds = true
-//        cell.layer.masksToBounds = true
+        //        cell.layer.masksToBounds = true
         return cell
     }
     
