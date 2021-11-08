@@ -17,7 +17,6 @@ class CharacterDetailsController: UIViewController,ItemSelectionDelegate{
     
     // MARK:- Definition of function to present the character's overlay view through the view controller
     func presentPopOverViewController(image: UIImage, itemName: String) {
-        print("Passed Title: ",itemName)
         let viewController = UIViewController()
         let imageView = UIImageView(image: image)
         let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .systemChromeMaterialDark))

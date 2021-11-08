@@ -94,7 +94,6 @@ extension SearchController:UISearchResultsUpdating,UISearchBarDelegate{
         let ts = String(Date().toMillis())
         let apiHash = "\(ts)\(privateApiKey)\(publicApiKey)".md5
         var charactersEndpoint = "https://gateway.marvel.com:443/v1/public/characters?orderBy=name&ts=\(ts)&apikey=\(publicApiKey)&hash=\(apiHash)"
-        print("Name: \(name)")
         if name.count == 0 {
             charactersEndpoint = "https://gateway.marvel.com:443/v1/public/characters?orderBy=name&ts=\(ts)&apikey=\(publicApiKey)&hash=\(apiHash)"
         }
