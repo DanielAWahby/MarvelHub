@@ -24,9 +24,10 @@ class AllCharactersController: UIViewController {
     let itemsPerPage = 5
     var offset = 0
     var isFetchingCharacters = false
+    var isCoolTransition = false
     @IBAction func searchPressed(_ sender: Any) {
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchController") as? SearchController
-        
+        viewController?.isCoolTransition = true
         let navigationController = UINavigationController(rootViewController: viewController ?? UIViewController())
         navigationController.modalTransitionStyle = .crossDissolve
         navigationController.modalPresentationStyle = .fullScreen
@@ -37,6 +38,13 @@ class AllCharactersController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        if isCoolTransition {
+            let transition = CATransition()
+            transition.type = CATransitionType.moveIn
+            transition.subtype = CATransitionSubtype.fromRight
+            transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeOut)
+            self.navigationController?.view.layer.add(transition, forKey: kCATransition)
+        }
         let imageView = UIImageView(image: UIImage(named: "marvel-logo"))
         //      im
         //        imageView.contentMode = .
@@ -157,7 +165,7 @@ extension AllCharactersController : UITableViewDelegate, UITableViewDataSource,U
         viewController?.imageExtension = allFetchedcharacters[indexPath.row].thumbnail?.imageExtension ?? "defaultImageExtension".localizableString
         viewController?.characterName = allFetchedcharacters[indexPath.row].name ?? "Ultron"
         viewController?.descriptionText =  allFetchedcharacters[indexPath.row].description ?? "Character Description Goes Here."
-        
+        viewController?.isCoolTranisition = true
         viewController?.modalTransitionStyle = .crossDissolve
         viewController?.modalPresentationStyle = .fullScreen
         present(viewController ?? UIViewController(), animated: true, completion: nil)

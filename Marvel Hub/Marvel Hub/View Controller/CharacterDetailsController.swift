@@ -12,7 +12,31 @@ protocol CharacterDetailDelegate: class {
     func onInnerCollectionlShouldUpdate()
 }
 
-class CharacterDetailsController: UIViewController {
+class CharacterDetailsController: UIViewController,ItemSelectionDelegate{
+    func presentPopOverViewController(image: UIImage, itemName: String) {
+        print("Passed Title: ",itemName)
+        let viewController = UIViewController()
+        let imageView = UIImageView(image: image)
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .systemChromeMaterialDark))
+        blurView.frame = self.view.frame
+        blurView.alpha = 0.7
+        viewController.view.addSubview(blurView)
+        imageView.center = blurView.contentView.center
+        imageView.contentMode = .scaleAspectFill
+        blurView.contentView.addSubview(imageView)
+        let itemNameLabel = UILabel()
+        blurView.contentView.addSubview(itemNameLabel)
+        itemNameLabel.frame = CGRect(x: blurView.contentView.frame.origin.x, y:blurView.contentView.center.y * 1.5, width: blurView.contentView.frame.size.width, height: 100)
+        itemNameLabel.text = itemName
+        itemNameLabel.textAlignment = .center
+        itemNameLabel.numberOfLines = 0
+        itemNameLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        itemNameLabel.textColor = UIColor(named: "SubTextColor")
+        viewController.modalPresentationStyle = .formSheet
+        viewController.modalTransitionStyle = .crossDissolve
+        self.present(viewController, animated: true, completion: nil)
+    }
+    
     
     let cellIdentifier = "characterItemIdentifier".localizableString
     let headerIdentifier = "headerItem".localizableString
@@ -37,7 +61,7 @@ class CharacterDetailsController: UIViewController {
     var seriesTask : URLSessionTask?
     var storiesTask : URLSessionTask?
     
-    
+    var isCoolTranisition = true
     
     var sectionInsets : UIEdgeInsets{
         return UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
@@ -61,7 +85,13 @@ class CharacterDetailsController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("ID: ",characterId)
+        if isCoolTranisition {
+            let transition = CATransition()
+            transition.type = CATransitionType.moveIn
+            transition.subtype = CATransitionSubtype.fromRight
+            transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeOut)
+            self.view.layer.add(transition, forKey: kCATransition)
+        }
         backButtonContainerView.layer.cornerRadius = backButtonContainerView.frame.height / 2
         backButtonContainerView.layer.maskedCorners = self.isAppArabic ? [.layerMinXMinYCorner,.layerMinXMaxYCorner]: [.layerMaxXMinYCorner,.layerMaxXMaxYCorner]
         backButton.setImage(self.isAppArabic ? UIImage(named:"ic-back-flipped") : UIImage(named:"ic-back") , for: .normal)
@@ -270,7 +300,7 @@ extension CharacterDetailsController : UICollectionViewDelegate,UICollectionView
         cell.passedEvents = events
         cell.passedSeries = series
         cell.passedStories = stories
-        
+        cell.delegate = self
         cell.onInnerCollectionlShouldUpdate()
         return cell
     }

@@ -18,11 +18,20 @@ class SearchController: UIViewController {
     
     let searchController = UISearchController(searchResultsController: nil)
     
+    var isCoolTransition = true
     @IBOutlet weak var resultsTableView:UITableView!
     @IBOutlet weak var activityView:UIView!
     @IBOutlet weak var activityIndicatorView:NVActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        if isCoolTransition {
+            let transition = CATransition()
+            transition.type = CATransitionType.moveIn
+            transition.subtype = CATransitionSubtype.fromRight
+            transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeOut)
+            self.navigationController?.view.layer.add(transition, forKey: kCATransition)
+        }
         self.view.backgroundColor = .clear
         
         searchController.searchResultsUpdater = self
@@ -111,11 +120,7 @@ extension SearchController:UISearchResultsUpdating,UISearchBarDelegate{
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         if searchBar.text == "" && !searchBar.isFirstResponder{
             let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AllCharacterScreen") as? AllCharactersController
-            //            let transition = CATransition()
-            //            transition.type = CATransitionType.fade
-            //            transition.subtype = CATransitionSubtype.fromRight
-            //            //        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeOut)
-            //            view.window!.layer.add(transition, forKey: kCATransition)
+            viewController?.isCoolTransition = true
             let navigtionController = UINavigationController(rootViewController:viewController ?? UIViewController())
             navigtionController.modalPresentationStyle = .fullScreen
             navigationController?.modalTransitionStyle = .crossDissolve
@@ -140,7 +145,7 @@ extension SearchController:UISearchResultsUpdating,UISearchBarDelegate{
         }
     }
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        if (searchBar.text == "") {
+        if (searchBar.text != "") {
             getCharacterByName(name:"")
         }
     }

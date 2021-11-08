@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol ItemSelectionDelegate: NSObjectProtocol {
+     func presentPopOverViewController(image:UIImage,itemName:String) -> ()
+}
+
 class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,CharacterDetailDelegate{
      
      let innerItemIdentifier = "characterInnerItemIdentifier".localizableString
@@ -16,6 +20,7 @@ class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollect
      var passedSeries = [Series]()
      var passedStories = [Story]()
      
+     weak var delegate : ItemSelectionDelegate?
      let subItemsCollectionView: UICollectionView = {
           let layout = UICollectionViewFlowLayout()
           layout.scrollDirection = .horizontal
@@ -61,6 +66,7 @@ class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollect
      }
      func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
           let cell =  collectionView.dequeueReusableCell(withReuseIdentifier: innerItemIdentifier, for: indexPath) as! SubItemCell
+          cell.cellSection = passedSection
           cell.itemTitle.text = getTitleForInnerCell(section: passedSection, row: indexPath.row)
           cell.photoImageView.image = getImageForInnerCell(section: passedSection, row: indexPath.row)
           return cell
@@ -77,7 +83,10 @@ class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollect
           return CGSize(width: frame.width / 3, height: 150)
      }
      func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-          print("Item PRessed")
+          let section =  (collectionView.dequeueReusableCell(withReuseIdentifier: innerItemIdentifier, for: indexPath) as! SubItemCell).cellSection
+          print("Cell Section: ",section)
+          print("Item Selected - ",getTitleForInnerCell(section: indexPath., row: indexPath.row))
+          self.delegate?.presentPopOverViewController(image: getImageForInnerCell(section: indexPath.section, row: indexPath.row), itemName: getTitleForInnerCell(section: indexPath.section, row: indexPath.row))
      }
      func onInnerCollectionlShouldUpdate() {
           self.subItemsCollectionView.reloadData()
@@ -108,7 +117,7 @@ class CharacterItemCell: UICollectionViewCell,UICollectionViewDelegate,UICollect
                cellImage = UIImage(named: "image-placeholder")
           }
           else{
-               let imageVariation = "portrait_xlarge"
+               let imageVariation = "portrait_incredible"
                
                let imageUrl = URL(string:"\(path)/\(imageVariation).\(imageExtension)")!
                do {
@@ -157,7 +166,7 @@ class SubItemCell: UICollectionViewCell {
           label.font = UIFont.systemFont(ofSize: 10.0,weight: .bold)
           return label
      }()
-     
+     var cellSection = 0
      override init(frame: CGRect) {
           super.init(frame: frame)
           addSubview(photoImageView)
