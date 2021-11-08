@@ -6,9 +6,7 @@
 //
 
 import UIKit
-import Alamofire
 import CryptoKit
-import SwiftyJSON
 import NVActivityIndicatorView
 
 class AllCharactersController: UIViewController {

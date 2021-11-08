@@ -16,19 +16,19 @@ lang = "ar";
 "descriptionTitle" = "وصف";
 "comicsTitle" = "كاريكاتير";
 "eventsTitle" = "أحداث";
-"seriesTitle" = "مسلسل";
+"seriesTitle" = "مسلسلات";
 "storiesTitle" = "قصص";
 
 
 // Default values for strings that can be nil.
 
 "defaultCharacterName" = "Ultron";
-"defaultDesriptionText" = "Character description goes here.";
+"defaultDesriptionText" = "هنا وصف الشخصية";
 "defaultPath" = "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73";
 "defaultExtension" = ".jpg";
-"defaultComicTitle" = "Marvel Comic";
-"defaultEventTitle" = "Marvel Event";
-"defaultSeriesTitle" = "Marvel Series";
-"defaultStoryTitle" = "Marvel Story";
+"defaultComicTitle" = "كاريكاتير Marvel";
+"defaultEventTitle" = "مناسبة Marvel";
+"defaultSeriesTitle" = "مسلسل Marvel";
+"defaultStoryTitle" = "قصة Marvel";
 
 

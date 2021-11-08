@@ -6,7 +6,5 @@ target 'Marvel Hub' do
   use_frameworks!
 
   # Pods for Marvel Hub
-	pod 'Alamofire', '~> 5.4'
-  pod 'SwiftyJSON'
   pod 'NVActivityIndicatorView'
 end
